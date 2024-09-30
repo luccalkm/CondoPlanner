@@ -17,7 +17,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 8;
 })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
@@ -26,35 +26,34 @@ builder.Services.AddIdentityServer()
     .AddAspNetIdentity<AppUser>()
     .AddInMemoryApiScopes(new[]
     {
-        new Duende.IdentityServer.Models.ApiScope("api", "API Scope")
+        new ApiScope("api", "API Scope")
     })
     .AddInMemoryClients(new[]
     {
-        new Duende.IdentityServer.Models.Client
+        new Client
         {
             ClientId = "condo_client",
-            AllowedGrantTypes = Duende.IdentityServer.Models.GrantTypes.ResourceOwnerPassword,
-            ClientSecrets = { new Duende.IdentityServer.Models.Secret("secret".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+            ClientSecrets = { new Secret("secret".Sha256()) },
             AllowedScopes = { "api" }
         }
     })
     .AddDeveloperSigningCredential();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecretKey")),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 builder.Services.AddAuthorization();
 

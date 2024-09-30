@@ -8,6 +8,7 @@ namespace CondoPlanner.API.Infrastructure.Identity
         public string Id { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
+        public string CPF { get; set; }
         public string UnitNumber { get; set; }
         public bool IsAdmin { get; set; }
         public ICollection<Condominium>? ManagedCondominiums { get; set; }
