@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CondoPlanner.Application.DTOs.CommomArea;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace CondoPlanner.Application.DTOs
         public TimeSpan EndTime { get; }
         public decimal TotalCost { get; }
         public int CommonAreaId { get; }
-        public CommonArea CommonArea { get; }
+        public CommonAreaDto CommonArea { get; }
         public string UserId { get; }
     }
 }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="DTOs\NewFile1.txt" />
+    <None Remove="DTOs\User\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>

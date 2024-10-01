@@ -1,12 +1,7 @@
 ﻿using CondoPlanner.Application.DTOs.Condominium;
 using CondoPlanner.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CondoPlanner.Application.DTOs
+namespace CondoPlanner.Application.DTOs.CommomArea
 {
     public class CommonAreaDto
     {

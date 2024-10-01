@@ -13,29 +13,29 @@ namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ReservationController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
 
-        public UserController(AppDbContext context, IMapper mapper)
+        public ReservationController(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        // GET: api/<UserController>
+        // GET: api/<ReservationController>
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _context.Users
+            var reservations = _context.Reservations
                                 .AsNoTracking()
                                 .ToList();
 
-            var dtos = _mapper.Map<IEnumerable<UserDto>>(users);
+            var dtos = _mapper.Map<IEnumerable<ReservationDto>>(users);
 
-            var response = new ResponseDto<IEnumerable<UserDto>>
+            var response = new ResponseDto<IEnumerable<ReservationDto>>
             {
                 Success = true,
                 Data = dtos
@@ -44,7 +44,7 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // GET api/<UserController>/5
+        // GET api/<ReservationController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -52,9 +52,9 @@ namespace CondoPlanner.API.Controllers
                                .AsNoTracking()
                                .FirstOrDefault(c => c.Id == id.ToString());
 
-            var dto = _mapper.Map<UserDto>(user);
+            var dto = _mapper.Map<ReservationDto>(user);
 
-            var response = new ResponseDto<UserDto>
+            var response = new ResponseDto<ReservationDto>
             {
                 Success = true,
                 Data = dto
@@ -63,14 +63,14 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // POST api/<UserController>
+        // POST api/<ReservationController>
         [HttpPost]
         public async Task<ActionResult> Post(UserCreateDto input)
         {
             var admin = await _context.Users.FindAsync(input.CPF);
 
             if (admin == null)
-                return NotFound(new ResponseDto<UserDto>
+                return NotFound(new ResponseDto<ReservationDto>
                 {
                     Success = false,
                     Message = "Administrator not found.",
@@ -81,13 +81,13 @@ namespace CondoPlanner.API.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            var userDto = _mapper.Map<UserDto>(user);
+            var reservationDto = _mapper.Map<ReservationDto>(user);
 
-            var response = new ResponseDto<UserDto>
+            var response = new ResponseDto<ReservationDto>
             {
                 Success = true,
-                Message = "Condominium created successfully.",
-                Data = userDto
+                Message = "Reservation created successfully.",
+                Data = reservationDto
             };
 
             return CreatedAtAction(nameof(Post), response);

@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using CondoPlanner.API.Infrastructure;
-using CondoPlanner.Application.DTOs;
 using CondoPlanner.Application.DTOs.Condominium;
-using CondoPlanner.Domain.Entities;
+using CondoPlanner.Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CondoPlanner.Application.DTOs.CommomArea;
+using CondoPlanner.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,29 +13,30 @@ namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CondominiumController : ControllerBase
+    public class CommonAreaController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
 
-        public CondominiumController(AppDbContext context, IMapper mapper)
+        public CommonAreaController(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        // GET: api/<CondominiumController>
+
+        // GET: api/<CommonAreaController>
         [HttpGet]
         public IActionResult GetAll()
         {
-            var condominiums = _context.Condominiums
+            var commonAreas = _context.CommonAreas
                                 .AsNoTracking()
                                 .ToList();
 
-            var dtos = _mapper.Map<IEnumerable<CondominiumDto>>(condominiums);
+            var dtos = _mapper.Map<IEnumerable<CommonAreaDto>>(commonAreas);
 
-            var response = new ResponseDto<IEnumerable<CondominiumDto>>
+            var response = new ResponseDto<IEnumerable<CommonAreaDto>>
             {
                 Success = true,
                 Data = dtos
@@ -43,17 +45,17 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // GET api/<CondominiumController>/5
+        // GET api/<CommonAreaController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var condominium = _context.Condominiums
-                               .AsNoTracking()
-                               .FirstOrDefault(c => c.Id == id);
+            var commonArea = _context.CommonAreas
+                                .AsNoTracking()
+                                .FirstOrDefault(c => c.Id == id);
 
-            var dto = _mapper.Map<CondominiumDto>(condominium);
+            var dto = _mapper.Map<CommonAreaDto>(commonArea);
 
-            var response = new ResponseDto<CondominiumDto>
+            var response = new ResponseDto<CommonAreaDto>
             {
                 Success = true,
                 Data = dto
@@ -62,43 +64,43 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // POST api/<CondominiumController>
+        // POST api/<CommonAreaController>
         [HttpPost]
-        public async Task<ActionResult> CreateCondominium(CondominiumCreateDto input)
+        public async Task<ActionResult> CreateCommonArea(CreateCommonAreaDto input)
         {
-            var admin = await _context.Users.FindAsync(input.IdAdministrator);
+            var condominium = await _context.Condominiums.FindAsync(input.CondominiumId);
 
-            if (admin == null)
+            if (condominium == null)
                 return NotFound(new ResponseDto<CondominiumDto>
                 {
                     Success = false,
-                    Message = "Administrator not found.",
+                    Message = "Condominium not found.",
                 });
 
-            var condominium = _mapper.Map<Condominium>(input);
+            var commonArea = _mapper.Map<CommonArea>(input);
 
-            _context.Condominiums.Add(condominium);
+            _context.CommonAreas.Add(commonArea);
             await _context.SaveChangesAsync();
 
-            var condominiumDto = _mapper.Map<CondominiumDto>(condominium);
+            var dto = _mapper.Map<CommonAreaDto>(commonArea);
 
-            var response = new ResponseDto<CondominiumDto>
+            var response = new ResponseDto<CommonAreaDto>
             {
                 Success = true,
-                Message = "Condominium created successfully.",
-                Data = condominiumDto
+                Message = "CommonArea created successfully.",
+                Data = dto
             };
 
             return CreatedAtAction("Post", response);
         }
 
-        // PUT api/<CondominiumController>/5
+        // PUT api/<CommonAreaController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<CondominiumController>/5
+        // DELETE api/<CommonAreaController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

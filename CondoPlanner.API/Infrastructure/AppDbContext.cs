@@ -11,6 +11,7 @@ namespace CondoPlanner.API.Infrastructure
         {
         }
         
+        public DbSet<User>? Users { get; set; }
         public DbSet<Condominium> Condominiums { get; set; }
         public DbSet<CommonArea> CommonAreas { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
