@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <Compile Remove="DTOs\Class1.cs" />
+    <Compile Remove="CommonDTOs\Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="DTOs\NewFile1.txt" />
-    <None Remove="DTOs\Reservation\NewFile1.txt" />
-    <None Remove="DTOs\User\NewFile1.txt" />
+    <None Remove="CommonDTOs\NewFile1.txt" />
+    <None Remove="ReservationServices\DTOs\NewFile1.txt" />
+    <None Remove="CommonDTOs\User\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CondoPlanner.Domain\CondoPlanner.Domain.csproj" />
+    <ProjectReference Include="..\CondoPlanner.Infrastructure\CondoPlanner.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

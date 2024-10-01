@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Interfaces.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Controllers\NewFile.txt" />
   </ItemGroup>
 
@@ -26,6 +30,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CondoPlanner.Application\CondoPlanner.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

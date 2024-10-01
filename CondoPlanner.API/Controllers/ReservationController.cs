@@ -1,14 +1,7 @@
-﻿using AutoMapper;
-using CondoPlanner.API.Infrastructure;
-using CondoPlanner.Application.DTOs;
-using CondoPlanner.Application.DTOs.Condominium;
-using CondoPlanner.Application.DTOs.Reservation;
-using CondoPlanner.Application.DTOs.User;
-using CondoPlanner.Domain.Entities;
+﻿using CondoPlanner.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using CondoPlanner.Application.DTOs;
+using CondoPlanner.Application.ReservationServices.Reservations;
 
 namespace CondoPlanner.API.Controllers
 {
@@ -16,25 +9,17 @@ namespace CondoPlanner.API.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IReservationService _reservationService;
 
-
-        public ReservationController(AppDbContext context, IMapper mapper)
+        public ReservationController(IReservationService reservationService)
         {
-            _context = context;
-            _mapper = mapper;
+            _reservationService = reservationService;
         }
 
-        // GET: api/<ReservationController>
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetReservations()
         {
-            var reservations = _context.Reservations
-                                .AsNoTracking()
-                                .ToList();
-
-            var dtos = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
+            var dtos = await _reservationService.GetAllReservationsAsync();
 
             var response = new ResponseDto<IEnumerable<ReservationDto>>
             {
@@ -45,15 +30,20 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // GET api/<ReservationController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetReservationById(int id)
         {
-            var reservation = _context.Reservations
-                               .AsNoTracking()
-                               .FirstOrDefault(c => c.Id == id.ToString());
+            var dto = await _reservationService.GetReservationByIdAsync(id);
 
-            var dto = _mapper.Map<ReservationDto>(reservation);
+            if (dto == null)
+            {
+                return NotFound(new ResponseDto<ReservationDto>
+                {
+                    Success = false,
+                    Message = "Reserva não encontrada.",
+                    Data = null
+                });
+            }
 
             var response = new ResponseDto<ReservationDto>
             {
@@ -64,46 +54,30 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // POST api/<ReservationController>
         [HttpPost]
-        public async Task<ActionResult> Post(ReservationCreateDto input)
+        public async Task<ActionResult<ResponseDto<ReservationDto>>> CreateOrUpdateReservation(CreateOrEditReservationDto input)
         {
-            var admin = await _context.Reservations.FindAsync(input.Id);
+            var response = await _reservationService.CreateOrUpdateReservationAsync(input);
 
-            if (admin == null)
-                return NotFound(new ResponseDto<ReservationDto>
-                {
-                    Success = false,
-                    Message = "Administrator not found.",
-                });
-
-            var reservation = _mapper.Map<Reservation>(input);
-
-            _context.Users.Add(reservation);
-            await _context.SaveChangesAsync();
-
-            var reservationDto = _mapper.Map<ReservationDto>(reservation);
-
-            var response = new ResponseDto<ReservationDto>
+            if (input.Id == 0 && response.Success)
             {
-                Success = true,
-                Message = "Reservation created successfully.",
-                Data = reservationDto
-            };
+                return CreatedAtAction(nameof(GetReservationById), new { id = response.Data.Id }, response);
+            }
 
-            return CreatedAtAction(nameof(Post), response);
+            return Ok(response);
         }
 
-        // PUT api/<CondominiumController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CondominiumController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteReservation(int id)
         {
+            var response = await _reservationService.DeleteReservationAsync(id);
+
+            if (!response.Success)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }

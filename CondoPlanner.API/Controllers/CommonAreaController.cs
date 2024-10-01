@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using CondoPlanner.API.Infrastructure;
 using CondoPlanner.Application.DTOs.Condominium;
 using CondoPlanner.Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CondoPlanner.Application.DTOs.CommomArea;
 using CondoPlanner.Domain.Entities;
+using CondoPlanner.Infrastructure.Persistence.Infrastructure;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

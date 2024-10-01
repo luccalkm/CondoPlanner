@@ -1,11 +1,13 @@
 using CondoPlanner.API.Infrastructure.Identity;
-using CondoPlanner.API.Infrastructure;
 using Duende.IdentityServer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CondoPlanner.API.Mappings;
+using CondoPlanner.Infrastructure.Persistence.Infrastructure;
+using CondoPlanner.API.Utils.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,10 +59,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Method that is supposed to group all the services that need a memory reference
+builder.InitializeServices();
 
 var app = builder.Build();
 

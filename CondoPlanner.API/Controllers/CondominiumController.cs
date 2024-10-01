@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CondoPlanner.API.Infrastructure;
 using CondoPlanner.Application.DTOs;
 using CondoPlanner.Application.DTOs.Condominium;
 using CondoPlanner.Domain.Entities;
+using CondoPlanner.Infrastructure.Persistence.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,6 @@ namespace CondoPlanner.API.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-
 
         public CondominiumController(AppDbContext context, IMapper mapper)
         {
