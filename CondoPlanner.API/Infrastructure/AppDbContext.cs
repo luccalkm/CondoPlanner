@@ -19,9 +19,9 @@ namespace CondoPlanner.API.Infrastructure
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Condominium>()
-                .HasMany(c => c.Administrators)
-                .WithMany(a => a.ManagedCondominiums);
+            //builder.Entity<Condominium>()
+            //    .HasMany(c => c.Administrators)
+            //    .WithMany(a => a.ManagedCondominiums);
         }
     }
 }
