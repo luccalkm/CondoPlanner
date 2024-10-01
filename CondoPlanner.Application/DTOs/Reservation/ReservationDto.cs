@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CondoPlanner.Application.DTOs
+namespace CondoPlanner.Application.DTOs.Reservation
 {
     public class ReservationDto
     {

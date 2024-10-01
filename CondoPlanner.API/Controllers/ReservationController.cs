@@ -2,6 +2,7 @@
 using CondoPlanner.API.Infrastructure;
 using CondoPlanner.Application.DTOs;
 using CondoPlanner.Application.DTOs.Condominium;
+using CondoPlanner.Application.DTOs.Reservation;
 using CondoPlanner.Application.DTOs.User;
 using CondoPlanner.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace CondoPlanner.API.Controllers
                                 .AsNoTracking()
                                 .ToList();
 
-            var dtos = _mapper.Map<IEnumerable<ReservationDto>>(users);
+            var dtos = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
 
             var response = new ResponseDto<IEnumerable<ReservationDto>>
             {
@@ -48,11 +49,11 @@ namespace CondoPlanner.API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = _context.Users
+            var reservation = _context.Reservations
                                .AsNoTracking()
                                .FirstOrDefault(c => c.Id == id.ToString());
 
-            var dto = _mapper.Map<ReservationDto>(user);
+            var dto = _mapper.Map<ReservationDto>(reservation);
 
             var response = new ResponseDto<ReservationDto>
             {
@@ -65,9 +66,9 @@ namespace CondoPlanner.API.Controllers
 
         // POST api/<ReservationController>
         [HttpPost]
-        public async Task<ActionResult> Post(UserCreateDto input)
+        public async Task<ActionResult> Post(ReservationCreateDto input)
         {
-            var admin = await _context.Users.FindAsync(input.CPF);
+            var admin = await _context.Reservations.FindAsync(input.Id);
 
             if (admin == null)
                 return NotFound(new ResponseDto<ReservationDto>
@@ -76,12 +77,12 @@ namespace CondoPlanner.API.Controllers
                     Message = "Administrator not found.",
                 });
 
-            var user = _mapper.Map<User>(input);
+            var reservation = _mapper.Map<Reservation>(input);
 
-            _context.Users.Add(user);
+            _context.Users.Add(reservation);
             await _context.SaveChangesAsync();
 
-            var reservationDto = _mapper.Map<ReservationDto>(user);
+            var reservationDto = _mapper.Map<ReservationDto>(reservation);
 
             var response = new ResponseDto<ReservationDto>
             {
