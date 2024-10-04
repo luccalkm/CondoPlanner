@@ -1,7 +1,7 @@
-﻿using CondoPlanner.Application.DTOs;
-using CondoPlanner.Application.ReservationServices.Reservations;
+﻿using CondoPlanner.Application.Services.CommonDTOs;
+using CondoPlanner.Application.Services.ReservationServices.DTOs;
 
-namespace CondoPlanner.Application.Services
+namespace CondoPlanner.Application.Services.ReservationServices
 {
     public interface IReservationService
     {

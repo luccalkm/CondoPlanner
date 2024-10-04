@@ -11,7 +11,6 @@ namespace CondoPlanner.Infrastructure.Persistence.Infrastructure
         {
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Condominium> Condominiums { get; set; }
         public DbSet<CommonArea> CommonAreas { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
@@ -19,6 +18,17 @@ namespace CondoPlanner.Infrastructure.Persistence.Infrastructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Condominium>()
+                .HasOne<AppUser>()
+                .WithMany()
+                .HasForeignKey(c => c.AdministratorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Condominium>()
+                .HasMany(c => c.ResidentsIds)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("CondominiumResidents"));
         }
     }
 }

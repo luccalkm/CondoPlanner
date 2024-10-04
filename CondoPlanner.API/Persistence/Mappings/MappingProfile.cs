@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CondoPlanner.API.Infrastructure.Identity;
-using CondoPlanner.Application.DTOs.Auth;
-using CondoPlanner.Application.DTOs.Condominium;
+using CondoPlanner.Application.Services.AccountServices.DTOs;
+using CondoPlanner.Application.Services.CommonDTOs.Condominium;
 using CondoPlanner.Domain.Entities;
 
 namespace CondoPlanner.API.Mappings
@@ -15,7 +15,6 @@ namespace CondoPlanner.API.Mappings
                 .ForMember(dest => dest.ManagedCondominiums, opt => opt.Ignore());
 
             CreateMap<CondominiumCreateDto, Condominium>()
-           .ForMember(dest => dest.Administrator, opt => opt.Ignore())
            .ForMember(dest => dest.AdministratorId, opt => opt.MapFrom(src => src.IdAdministrator));
 
             CreateMap<Condominium, CondominiumDto>();

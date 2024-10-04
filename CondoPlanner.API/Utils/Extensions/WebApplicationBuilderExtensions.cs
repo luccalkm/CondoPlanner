@@ -1,4 +1,5 @@
-﻿using CondoPlanner.Application.Services;
+﻿using CondoPlanner.Application.Services.AccountServices;
+using CondoPlanner.Application.Services.ReservationServices;
 
 namespace CondoPlanner.API.Utils.Extensions
 {
@@ -7,6 +8,7 @@ namespace CondoPlanner.API.Utils.Extensions
         public static void InitializeServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IReservationService, ReservationService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using CondoPlanner.Application.DTOs.Condominium;
+﻿using CondoPlanner.Application.Services.CommonDTOs.Condominium;
 using CondoPlanner.Domain.Entities;
 
-namespace CondoPlanner.Application.DTOs.CommomArea
+namespace CondoPlanner.Application.Services.CommonDTOs.CommomArea
 {
     public class CommonAreaDto
     {

@@ -1,22 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <Compile Remove="CommonDTOs\Class1.cs" />
+    <Compile Remove="Services\CommonDTOs\Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="CommonDTOs\NewFile1.txt" />
-    <None Remove="ReservationServices\DTOs\NewFile1.txt" />
-    <None Remove="CommonDTOs\User\NewFile1.txt" />
+    <None Remove="Services\CommonDTOs\NewFile1.txt" />
+    <None Remove="Services\ReservationServices\DTOs\NewFile1.txt" />
+    <None Remove="Services\CommonDTOs\User\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CondoPlanner.Domain\CondoPlanner.Domain.csproj" />
     <ProjectReference Include="..\CondoPlanner.Infrastructure\CondoPlanner.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\CommonDTOs\User\" />
   </ItemGroup>
 
   <PropertyGroup>

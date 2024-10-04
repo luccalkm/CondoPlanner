@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CondoPlanner.Application.DTOs.Auth
+namespace CondoPlanner.Application.Services.AccountServices.DTOs
 {
     public class LoginDto
     {

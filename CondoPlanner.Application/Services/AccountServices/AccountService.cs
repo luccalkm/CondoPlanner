@@ -1,31 +1,28 @@
 ﻿using CondoPlanner.API.Infrastructure.Identity;
-using CondoPlanner.Application.DTOs.Auth;
+using CondoPlanner.Application.Services.AccountServices.DTOs;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace CondoPlanner.API.Controllers
+namespace CondoPlanner.Application.Services.AccountServices
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountService : IAccountService
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IConfiguration _configuration;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration)
+        public AccountService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserDto registerDto)
+        public async Task<IdentityResult> RegisterAsync(RegisterUserDto registerDto)
         {
             var user = new AppUser
             {
@@ -36,42 +33,31 @@ namespace CondoPlanner.API.Controllers
                 IsAdmin = registerDto.IsAdmin
             };
 
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-
-            return Ok(new { message = "User registered successfully" });
+            return await _userManager.CreateAsync(user, registerDto.Password);
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<string?> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             if (user == null)
             {
-                return Unauthorized(new { message = "Invalid email or password" });
+                throw new Exception("User could with that e-mail dont exist or could not be located. Please, verify your informatioon and try again.");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded)
             {
-                return Unauthorized(new { message = "Invalid email or password" });
+                throw new Exception("Invalid password. Please, try again.");
             }
 
-            var token = GenerateJwtToken(user);
-            return Ok(new { token });
+            return GenerateJwtToken(user);
         }
 
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
+        public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
-            return Ok(new { message = "Logged out successfully" });
         }
 
         private string GenerateJwtToken(AppUser user)

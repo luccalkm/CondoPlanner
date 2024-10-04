@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using CondoPlanner.Application.DTOs;
-using CondoPlanner.Application.DTOs.Condominium;
-using CondoPlanner.Application.DTOs.User;
-using CondoPlanner.Domain.Entities;
+using CondoPlanner.API.Infrastructure.Identity;
+using CondoPlanner.Application.Services.UserServices.DTOs;
 using CondoPlanner.Infrastructure.Persistence.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +74,7 @@ namespace CondoPlanner.API.Controllers
                     Message = "Administrator not found.",
                 });
 
-            var user = _mapper.Map<User>(input);
+            var user = _mapper.Map<AppUser>(input);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

@@ -1,4 +1,4 @@
-﻿using CondoPlanner.Application.DTOs.User;
+﻿using CondoPlanner.Application.Services.UserServices.DTOs;
 using CondoPlanner.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CondoPlanner.Application.DTOs.Condominium
+namespace CondoPlanner.Application.Services.CommonDTOs.Condominium
 {
     public class CondominiumDto
     {

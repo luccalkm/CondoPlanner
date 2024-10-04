@@ -1,7 +1,7 @@
-﻿using CondoPlanner.Application.Services;
-using Microsoft.AspNetCore.Mvc;
-using CondoPlanner.Application.DTOs;
-using CondoPlanner.Application.ReservationServices.Reservations;
+﻿using Microsoft.AspNetCore.Mvc;
+using CondoPlanner.Application.Services.ReservationServices;
+using CondoPlanner.Application.Services.ReservationServices.DTOs;
+using CondoPlanner.Application.Services.CommonDTOs;
 
 namespace CondoPlanner.API.Controllers
 {

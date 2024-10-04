@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CondoPlanner.Application.DTOs;
-using CondoPlanner.Application.DTOs.Condominium;
+using CondoPlanner.Application.Services.CommonDTOs.Condominium;
 using CondoPlanner.Domain.Entities;
 using CondoPlanner.Infrastructure.Persistence.Infrastructure;
 using Microsoft.AspNetCore.Mvc;

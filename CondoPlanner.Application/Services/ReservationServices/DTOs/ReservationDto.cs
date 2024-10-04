@@ -1,11 +1,11 @@
-﻿using CondoPlanner.Application.DTOs.CommomArea;
+﻿using CondoPlanner.Application.Services.CommonDTOs.CommomArea;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CondoPlanner.Application.ReservationServices.Reservations
+namespace CondoPlanner.Application.Services.ReservationServices.DTOs
 {
     public class ReservationDto
     {

@@ -8,12 +8,8 @@
         public decimal CostPerHour { get; set; }
         public TimeSpan AvailableFrom { get; set; }
         public TimeSpan AvailableUntil { get; set; }
-
-        // Relação com o Condominium
         public int CondominiumId { get; set; }
         public Condominium Condominium { get; set; }
-
-        // Lista de reservas associadas à área comum
         public ICollection<Reservation> Reservations { get; set; }
     }
 }

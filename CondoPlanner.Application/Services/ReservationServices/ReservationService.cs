@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using CondoPlanner.Application.DTOs;
-using CondoPlanner.Application.ReservationServices.Reservations;
+using CondoPlanner.Application.Services.CommonDTOs;
+using CondoPlanner.Application.Services.ReservationServices.DTOs;
 using CondoPlanner.Domain.Entities;
 using CondoPlanner.Infrastructure.Persistence.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace CondoPlanner.Application.Services
+namespace CondoPlanner.Application.Services.ReservationServices
 {
     public class ReservationService : IReservationService
     {

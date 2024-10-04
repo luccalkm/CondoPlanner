@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CondoPlanner.Application.DTOs.Auth
+namespace CondoPlanner.Application.Services.AccountServices.DTOs
 {
     public class RegisterUserDto
     {
@@ -8,7 +8,7 @@ namespace CondoPlanner.Application.DTOs.Auth
         public string Email { get; set; }
         public string CPF { get; set; }
         public string Password { get; set; }
-        public string UnitNumber { get; set; }
+        public string? UnitNumber { get; set; }
         public bool IsAdmin { get; set; }
     }
 }
