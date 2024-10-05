@@ -19,8 +19,6 @@ const CondominiumPage = () => {
             numberOfResidences: parseInt(numberOfResidences, 10),
         };
 
-        console.log(formData);
-
         setName('');
         setAddress('');
         setNumberOfResidences('');

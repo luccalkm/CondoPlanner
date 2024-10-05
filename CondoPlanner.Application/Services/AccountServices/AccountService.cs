@@ -25,6 +25,13 @@ namespace CondoPlanner.Application.Services.AccountServices
 
         public async Task<IdentityResult> RegisterAsync(RegisterUserDto registerDto)
         {
+            var existingUser = await _userManager.Users.SingleOrDefaultAsync(u => u.Email == registerDto.Email);
+
+            if (existingUser != null)
+            {
+                throw new Exception("Usuário com esse e-mail já foi cadastrado no sistema. Por favor, verifique suas informações e tente novamente.");
+            }
+
             var user = new AppUser
             {
                 FullName = registerDto.FullName,
@@ -41,20 +48,20 @@ namespace CondoPlanner.Application.Services.AccountServices
         public async Task<string?> LoginAsync(LoginDto loginDto)
         {
             if (string.IsNullOrEmpty(loginDto.Email) || string.IsNullOrEmpty(loginDto.Password))
-                throw new Exception("Login credentials were invalid.");
+                throw new Exception("Credenciais de login são inválidas");
 
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Email == loginDto.Email);
 
             if (user == null)
             {
-                throw new Exception("User could with that e-mail dont exist or could not be located. Please, verify your informatioon and try again.");
+                throw new Exception("Não existe um usuário cadastrado com esse e-mail. Por favor, tente novamente após verificar suas informações.");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded)
             {
-                throw new Exception("Invalid password. Please, try again.");
+                throw new Exception("Senha inválida. Por favor, tente novamente.");
             }
 
             return GenerateJwtToken(user);

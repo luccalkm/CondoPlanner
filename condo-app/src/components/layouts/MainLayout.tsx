@@ -28,13 +28,6 @@ const drawerWidth = 320;
 const MainLayout = () => {
     const theme = useTheme();
 
-
-    // const drawerItemsUser = [
-    //     { text: 'Início', path: '/', icon: <HomeRounded /> },
-    //     { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
-    //     { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
-    // ];
-
     const drawerItemsAdmin = [
         { text: 'Início', path: '/', icon: <HomeRounded /> },
         { text: 'Reservas', path: '/reservation', icon: <CalendarMonthRounded /> },
@@ -45,7 +38,6 @@ const MainLayout = () => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
             <Drawer
                 variant="permanent"
                 sx={{

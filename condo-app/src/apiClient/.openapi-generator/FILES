@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/AccountApi.ts
 apis/CommonAreaApi.ts
 apis/CondominiumApi.ts
@@ -12,11 +13,13 @@ models/CondominiumDto.ts
 models/CondominiumResident.ts
 models/CreateCommonAreaDto.ts
 models/CreateOrEditReservationDto.ts
+models/HttpStatusCode.ts
 models/LoginDto.ts
 models/RegisterUserDto.ts
 models/Reservation.ts
 models/ReservationDto.ts
 models/ReservationDtoResponseDto.ts
+models/StringResponseDto.ts
 models/TimeSpan.ts
 models/UserDto.ts
 models/index.ts

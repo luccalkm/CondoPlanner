@@ -1,4 +1,3 @@
-// src/apiClient.ts (ou onde estiver sua configuração)
 import { Configuration, ErrorContext, ResponseContext } from '../apiClient';
 
 const token = localStorage.getItem('token');

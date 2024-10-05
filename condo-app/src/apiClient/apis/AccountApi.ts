@@ -17,12 +17,15 @@ import * as runtime from '../runtime';
 import type {
   LoginDto,
   RegisterUserDto,
+  StringResponseDto,
 } from '../models/index';
 import {
     LoginDtoFromJSON,
     LoginDtoToJSON,
     RegisterUserDtoFromJSON,
     RegisterUserDtoToJSON,
+    StringResponseDtoFromJSON,
+    StringResponseDtoToJSON,
 } from '../models/index';
 
 export interface ApiAccountLoginPostRequest {
@@ -40,7 +43,7 @@ export class AccountApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiAccountLoginPostRaw(requestParameters: ApiAccountLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async apiAccountLoginPostRaw(requestParameters: ApiAccountLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StringResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -63,13 +66,14 @@ export class AccountApi extends runtime.BaseAPI {
             body: LoginDtoToJSON(requestParameters['loginDto']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => StringResponseDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiAccountLoginPost(requestParameters: ApiAccountLoginPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiAccountLoginPostRaw(requestParameters, initOverrides);
+    async apiAccountLoginPost(requestParameters: ApiAccountLoginPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StringResponseDto> {
+        const response = await this.apiAccountLoginPostRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -106,7 +110,6 @@ export class AccountApi extends runtime.BaseAPI {
     /**
      */
     async apiAccountRegisterPostRaw(requestParameters: ApiAccountRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};

@@ -1,5 +1,3 @@
-// src/pages/register/RegisterPage.tsx
-
 import React, { useState } from 'react';
 import {
     Link,
@@ -19,11 +17,11 @@ import {
     Snackbar,
     Alert,
 } from '@mui/material';
-import SubmitButton from '../../layouts/Buttons/SubmitButton';
-import { AccountApi, RegisterUserDto } from "../../apiClient";
-import { ApiConfiguration } from "../../apiClient/apiConfig";
+import SubmitButton from '../../../components/Buttons/SubmitButton';
+import { AccountApi, RegisterUserDto } from "../../../apiClient";
+import { ApiConfiguration } from "../../../apiClient/apiConfig";
 import { CheckCircle, Cancel } from "@mui/icons-material";
-import theme from "../../theme";
+import theme from "../../../theme";
 import { useNavigate } from 'react-router-dom';
 
 const passwordRules = {
@@ -135,22 +133,23 @@ const RegisterPage: React.FC = () => {
 
         try {
             const accountApi = new AccountApi(ApiConfiguration);
-            const response = await accountApi.apiAccountRegisterPost({
+            await accountApi.apiAccountRegisterPost({
                 registerUserDto: {
                     ...registerForm,
                 }
             });
-            console.log('Cadastro realizado:', response);
+            
             setSnackbar({
                 open: true,
                 message: "Cadastro realizado com sucesso!",
                 severity: "success",
             });
+
             setTimeout(() => {
                 navigate('/login');
             }, 1500);
+            
         } catch (error: any) {
-            console.error('Erro ao realizar cadastro:', error);
             const errorMessage = error?.response?.data?.message || "Erro ao realizar cadastro. Verifique os dados e tente novamente.";
             setSnackbar({
                 open: true,
@@ -162,7 +161,6 @@ const RegisterPage: React.FC = () => {
 
     return (
         <Container component="main">
-            <CssBaseline />
             <Grid2
                 container
                 direction="column"
@@ -172,18 +170,6 @@ const RegisterPage: React.FC = () => {
                     padding: 2,
                 }}
             >
-                <Grid2>
-                    <Box
-                    component="img"
-                    src="/condo-logo.png"
-                    alt="Logo"
-                    sx={{
-                        width: '70%',
-                        height: 'auto',
-                        mb: theme.spacing(6),
-                    }}
-                    />
-                </Grid2>
                 <Grid2>
                     <Typography
                         component="h1"

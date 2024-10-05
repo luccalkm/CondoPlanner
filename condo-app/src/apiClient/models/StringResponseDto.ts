@@ -13,12 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { ReservationDto } from './ReservationDto';
-import {
-    ReservationDtoFromJSON,
-    ReservationDtoFromJSONTyped,
-    ReservationDtoToJSON,
-} from './ReservationDto';
 import type { HttpStatusCode } from './HttpStatusCode';
 import {
     HttpStatusCodeFromJSON,
@@ -29,49 +23,49 @@ import {
 /**
  * 
  * @export
- * @interface ReservationDtoResponseDto
+ * @interface StringResponseDto
  */
-export interface ReservationDtoResponseDto {
+export interface StringResponseDto {
     /**
      * 
      * @type {HttpStatusCode}
-     * @memberof ReservationDtoResponseDto
+     * @memberof StringResponseDto
      */
     statusCode?: HttpStatusCode;
     /**
      * 
      * @type {boolean}
-     * @memberof ReservationDtoResponseDto
+     * @memberof StringResponseDto
      */
     success?: boolean;
     /**
      * 
      * @type {string}
-     * @memberof ReservationDtoResponseDto
+     * @memberof StringResponseDto
      */
     message?: string | null;
     /**
      * 
-     * @type {ReservationDto}
-     * @memberof ReservationDtoResponseDto
+     * @type {string}
+     * @memberof StringResponseDto
      */
-    data?: ReservationDto;
+    data?: string | null;
 }
 
 
 
 /**
- * Check if a given object implements the ReservationDtoResponseDto interface.
+ * Check if a given object implements the StringResponseDto interface.
  */
-export function instanceOfReservationDtoResponseDto(value: object): value is ReservationDtoResponseDto {
+export function instanceOfStringResponseDto(value: object): value is StringResponseDto {
     return true;
 }
 
-export function ReservationDtoResponseDtoFromJSON(json: any): ReservationDtoResponseDto {
-    return ReservationDtoResponseDtoFromJSONTyped(json, false);
+export function StringResponseDtoFromJSON(json: any): StringResponseDto {
+    return StringResponseDtoFromJSONTyped(json, false);
 }
 
-export function ReservationDtoResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ReservationDtoResponseDto {
+export function StringResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): StringResponseDto {
     if (json == null) {
         return json;
     }
@@ -80,11 +74,11 @@ export function ReservationDtoResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
         'statusCode': json['statusCode'] == null ? undefined : HttpStatusCodeFromJSON(json['statusCode']),
         'success': json['success'] == null ? undefined : json['success'],
         'message': json['message'] == null ? undefined : json['message'],
-        'data': json['data'] == null ? undefined : ReservationDtoFromJSON(json['data']),
+        'data': json['data'] == null ? undefined : json['data'],
     };
 }
 
-export function ReservationDtoResponseDtoToJSON(value?: ReservationDtoResponseDto | null): any {
+export function StringResponseDtoToJSON(value?: StringResponseDto | null): any {
     if (value == null) {
         return value;
     }
@@ -93,7 +87,7 @@ export function ReservationDtoResponseDtoToJSON(value?: ReservationDtoResponseDt
         'statusCode': HttpStatusCodeToJSON(value['statusCode']),
         'success': value['success'],
         'message': value['message'],
-        'data': ReservationDtoToJSON(value['data']),
+        'data': value['data'],
     };
 }
 
