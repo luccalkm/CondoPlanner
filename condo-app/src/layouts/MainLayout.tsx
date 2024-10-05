@@ -13,15 +13,29 @@ import {
     Button,
 } from '@mui/material';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
-import { HomeRounded, CalendarMonthRounded, DashboardCustomizeRounded } from '@mui/icons-material';
+import {
+    HomeRounded,
+    CalendarMonthRounded,
+    DashboardCustomizeRounded,
+    ApartmentRounded,
+    GroupRounded
+} from '@mui/icons-material';
 
 const drawerWidth = 240;
 
 const MainLayout = () => {
+    // const drawerItemsUser = [
+    //     { text: 'Início', path: '/', icon: <HomeRounded /> },
+    //     { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
+    //     { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
+    // ];
+
     const drawerItemsAdmin = [
         { text: 'Início', path: '/', icon: <HomeRounded /> },
         { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
+        { text: 'Moradores', path: '/contact', icon: <GroupRounded /> },
         { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
+        { text: 'Condomínio', path: '/condominium', icon: <ApartmentRounded /> },
     ];
 
     return (
@@ -49,7 +63,7 @@ const MainLayout = () => {
                                 Nome do Usuário
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'gray', fontSize: '0.85em' }}>
-                                Condomínio 
+                                Condomínio
                             </Typography>
                         </Box>
                     </Box>
