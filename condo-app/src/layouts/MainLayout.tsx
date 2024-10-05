@@ -11,6 +11,8 @@ import {
     Divider,
     Avatar,
     Button,
+    useTheme,
+    useMediaQuery,
 } from '@mui/material';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
 import {
@@ -21,9 +23,12 @@ import {
     GroupRounded
 } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = 320;
 
 const MainLayout = () => {
+    const theme = useTheme();
+
+
     // const drawerItemsUser = [
     //     { text: 'Início', path: '/', icon: <HomeRounded /> },
     //     { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
@@ -32,7 +37,7 @@ const MainLayout = () => {
 
     const drawerItemsAdmin = [
         { text: 'Início', path: '/', icon: <HomeRounded /> },
-        { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
+        { text: 'Reservas', path: '/reservation', icon: <CalendarMonthRounded /> },
         { text: 'Moradores', path: '/contact', icon: <GroupRounded /> },
         { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
         { text: 'Condomínio', path: '/condominium', icon: <ApartmentRounded /> },
@@ -49,14 +54,13 @@ const MainLayout = () => {
                     '& .MuiDrawer-paper': {
                         width: drawerWidth,
                         boxSizing: 'border-box',
-                        bgcolor: '#0F4B7E',
+                        bgcolor: theme.palette.primary.main,
                         color: 'white',
                     },
                 }}
             >
-                {/* Header do Drawer */}
                 <Box sx={{ padding: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: "0.6em" }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: "0.6em", paddingLeft: '0.8em' }}>
                         <Avatar sx={{ width: 40, height: 40 }} />
                         <Box sx={{ marginLeft: 2 }}>
                             <Typography variant="body1">
@@ -68,7 +72,7 @@ const MainLayout = () => {
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
-                        <Button variant="outlined" size="medium" sx={{ color: 'white', borderColor: 'white' }}>
+                        <Button variant="outlined" sx={{ color: 'white', borderColor: 'white', width: '90%' }}>
                             Editar Perfil
                         </Button>
                     </Box>
@@ -76,8 +80,7 @@ const MainLayout = () => {
 
                 <Divider sx={{ my: 1, bgcolor: 'white' }} />
 
-                {/* Lista de Itens do Drawer */}
-                <List>
+                <List style={{paddingLeft: '0.8em'}}>
                     {drawerItemsAdmin.map((item) => (
                         <ListItem key={item.text} component={RouterLink} disablePadding to={item.path}>
                             <ListItemButton sx={{ color: 'white', '&:hover': { backgroundColor: '#0A3E54' } }}>
