@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\**" />
+    <Content Remove="Interfaces\**" />
+    <EmbeddedResource Remove="Interfaces\**" />
+    <None Remove="Interfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\Interfaces.cs" />
   </ItemGroup>
 
@@ -30,10 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CondoPlanner.Application\CondoPlanner.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

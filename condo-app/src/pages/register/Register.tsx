@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Link,
     Typography,
     Container,
@@ -8,30 +7,78 @@ import {
     TextField,
     Box,
 } from '@mui/material';
+import SubmitButton from '../../layouts/Buttons/SubmitButton';
+import { useNavigate } from 'react-router-dom';
+import { AccountApi, RegisterUserDto } from "../../apiClient";
 
-const RegisterPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+const RegisterPage: React.FC = () => {
+    const [registerForm, setRegisterForm] = useState<RegisterUserDto>({
+        email: '',
+        password: '',
+        confirmationPassword: '',
+        cpf: '',
+        unitNumber: undefined,
+        isAdmin: false
+    });
+    const navigate = useNavigate();
 
-    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setRegisterForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log('Cadastro realizado', { email, password, confirmPassword });
+        const accountApi = new AccountApi();
+        await accountApi.apiAccountRegisterPost({
+            registerUserDto: {
+                ...registerForm
+            }
+        }).then((res) => {
+            navigate('/home');
+        }).finally(() => {
+
+        })
     };
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    mt: 8,
+                }}
+            >
+                <Box
+                    component="img"
                     src="/condo-logo.png"
                     alt="Logo"
-                    style={{ width: '70%', height: 'auto', marginBottom: '3.6em' }}
+                    sx={{
+                        width: '70%',
+                        height: 'auto',
+                        mb: 6,
+                    }}
                 />
-                <Typography component="h1" variant="h5" fontWeight={'bold'} marginBottom={2}>
+                <Typography
+                    component="h1"
+                    variant="h5"
+                    fontWeight="bold"
+                    sx={{ mb: 2 }}
+                >
                     Faça o seu cadastro
                 </Typography>
-                <div style={{ width: '100%', marginTop: 16 }}>
+                <Box
+                    component="form"
+                    noValidate
+                    onSubmit={handleSubmit}
+                    sx={{ mt: 1, width: '100%' }}
+                >
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -42,8 +89,12 @@ const RegisterPage = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={registerForm.email}
+                        onChange={handleChange}
+                        sx={{
+                            backgroundColor: 'background.paper',
+                            borderRadius: 1,
+                        }}
                     />
                     <TextField
                         variant="outlined"
@@ -55,8 +106,12 @@ const RegisterPage = () => {
                         type="password"
                         id="password"
                         autoComplete="new-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={registerForm.password}
+                        onChange={handleChange}
+                        sx={{
+                            backgroundColor: 'background.paper',
+                            borderRadius: 1,
+                        }}
                     />
                     <TextField
                         variant="outlined"
@@ -68,26 +123,38 @@ const RegisterPage = () => {
                         type="password"
                         id="confirm-password"
                         autoComplete="new-password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={registerForm.confirmPassword}
+                        onChange={handleChange}
+                        sx={{
+                            backgroundColor: 'background.paper',
+                            borderRadius: 1,
+                        }}
                     />
-                    <Button
-                        type="submit"
+                    <SubmitButton
+                        label="Criar conta"
                         fullWidth
-                        variant="contained"
-                        color="primary"
-                        style={{ margin: '24px 0 24px' }}
-                        onClick={handleSubmit}
+                        sx={{ mt: 3, mb: 3 }}
+                    />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: 2,
+                            mb: 2,
+                            width: '100%',
+                        }}
                     >
-                        Criar conta
-                    </Button>
-                    <Box display="flex" justifyContent="center" marginBottom={2} marginTop={2} width="100%">
-                        <Link href="/login" variant="body1">
+                        <Link
+                            href="/login"
+                            variant="button"
+                            underline="none"
+                            sx={{ color: 'primary.main' }}
+                        >
                             Já tenho conta
                         </Link>
                     </Box>
-                </div>
-            </div>
+                </Box>
+            </Box>
         </Container>
     );
 };
