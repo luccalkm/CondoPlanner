@@ -1,6 +1,7 @@
 ﻿using CondoPlanner.API.Infrastructure.Identity;
 using CondoPlanner.Application.Services.AccountServices.DTOs;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,7 +31,8 @@ namespace CondoPlanner.Application.Services.AccountServices
                 Email = registerDto.Email,
                 UserName = registerDto.Email,
                 UnitNumber = registerDto.UnitNumber,
-                IsAdmin = registerDto.IsAdmin
+                IsAdmin = registerDto.IsAdmin,
+                CPF = registerDto.CPF,
             };
 
             return await _userManager.CreateAsync(user, registerDto.Password);
@@ -38,7 +40,10 @@ namespace CondoPlanner.Application.Services.AccountServices
 
         public async Task<string?> LoginAsync(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (string.IsNullOrEmpty(loginDto.Email) || string.IsNullOrEmpty(loginDto.Password))
+                throw new Exception("Login credentials were invalid.");
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Email == loginDto.Email);
 
             if (user == null)
             {
@@ -76,7 +81,7 @@ namespace CondoPlanner.Application.Services.AccountServices
 
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Issuer"],
+                "api",
                 claims,
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: creds);

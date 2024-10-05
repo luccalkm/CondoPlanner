@@ -1,105 +1,108 @@
 ﻿using AutoMapper;
-using CondoPlanner.Application.Services.CommonDTOs.Condominium;
-using CondoPlanner.Domain.Entities;
-using CondoPlanner.Infrastructure.Persistence.Infrastructure;
+using CondoPlanner.Application.Services.CommonDTOs;
+using CondoPlanner.Application.Services.CondominiumServices;
+using CondoPlanner.Application.Services.CondominiumServices.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CondominiumController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ICondominiumService _condominiumService;
         private readonly IMapper _mapper;
 
-        public CondominiumController(AppDbContext context, IMapper mapper)
+        public CondominiumController(ICondominiumService condominiumService, IMapper mapper)
         {
-            _context = context;
+            _condominiumService = condominiumService;
             _mapper = mapper;
         }
 
-        // GET: api/<CondominiumController>
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetAllCondominumsFromUser(string userId)
         {
-            var condominiums = _context.Condominiums
-                                .AsNoTracking()
-                                .ToList();
-
-            var dtos = _mapper.Map<IEnumerable<CondominiumDto>>(condominiums);
-
+            var condominiums = await _condominiumService.GetAllCondominumsFromUserAsync(userId);
             var response = new ResponseDto<IEnumerable<CondominiumDto>>
             {
                 Success = true,
-                Data = dtos
+                Data = condominiums
             };
 
             return Ok(response);
         }
 
-        // GET api/<CondominiumController>/5
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetCondominiumById(int id)
         {
-            var condominium = _context.Condominiums
-                               .AsNoTracking()
-                               .FirstOrDefault(c => c.Id == id);
-
-            var dto = _mapper.Map<CondominiumDto>(condominium);
-
-            var response = new ResponseDto<CondominiumDto>
+            var condominium = await _condominiumService.GetCondominiumDetailsAsync(id);
+            if (condominium == null)
             {
-                Success = true,
-                Data = dto
-            };
-
-            return Ok(response);
-        }
-
-        // POST api/<CondominiumController>
-        [HttpPost]
-        public async Task<ActionResult> CreateCondominium(CondominiumCreateDto input)
-        {
-            var admin = await _context.Users.FindAsync(input.IdAdministrator);
-
-            if (admin == null)
                 return NotFound(new ResponseDto<CondominiumDto>
                 {
                     Success = false,
-                    Message = "Administrator not found.",
+                    Message = "Condominium not found."
                 });
-
-            var condominium = _mapper.Map<Condominium>(input);
-
-            _context.Condominiums.Add(condominium);
-            await _context.SaveChangesAsync();
-
-            var condominiumDto = _mapper.Map<CondominiumDto>(condominium);
+            }
 
             var response = new ResponseDto<CondominiumDto>
             {
                 Success = true,
-                Message = "Condominium created successfully.",
-                Data = condominiumDto
+                Data = condominium
             };
 
-            return CreatedAtAction("Post", response);
+            return Ok(response);
         }
 
-        // PUT api/<CondominiumController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        public async Task<ActionResult> CreateCondominium(CondominiumCreateDto input)
         {
+            try
+            {
+                var condominiumDto = await _condominiumService.CreateCondominiumAsync(input);
+                var response = new ResponseDto<CondominiumDto>
+                {
+                    Success = true,
+                    Message = "Condominium created successfully.",
+                    Data = condominiumDto
+                };
+
+                return CreatedAtAction(nameof(GetCondominiumById), new { id = condominiumDto.Id }, response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ResponseDto<CondominiumDto>
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
         }
 
-        // DELETE api/<CondominiumController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteCondominium(int id)
         {
+            try
+            {
+                await _condominiumService.DeleteCondominiumAsync(id);
+                return Ok(new ResponseDto<object>
+                {
+                    Success = true,
+                    Message = "Condominium deleted successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ResponseDto<object>
+                {
+                    Success = false,
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

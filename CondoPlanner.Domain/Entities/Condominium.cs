@@ -8,7 +8,7 @@
         public int NumberOfResidences { get; set; }
 
         public ICollection<CommonArea>? CommonAreas { get; set; }
-        public ICollection<string>? ResidentsIds { get; set; }
+        public ICollection<CondominiumResident>? Residents { get; set; }
         public string AdministratorId { get; set; }
     }
 }

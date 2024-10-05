@@ -1,13 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="Services\CommonDTOs\User\**" />
+    <EmbeddedResource Remove="Services\CommonDTOs\User\**" />
+    <None Remove="Services\CommonDTOs\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Services\CommonDTOs\Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Services\CommonDTOs\NewFile1.txt" />
     <None Remove="Services\ReservationServices\DTOs\NewFile1.txt" />
-    <None Remove="Services\CommonDTOs\User\NewFile1.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,10 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CondoPlanner.Domain\CondoPlanner.Domain.csproj" />
     <ProjectReference Include="..\CondoPlanner.Infrastructure\CondoPlanner.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\CommonDTOs\User\" />
   </ItemGroup>
 
   <PropertyGroup>

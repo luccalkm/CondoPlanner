@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using CondoPlanner.Domain.Entities;
 using CondoPlanner.Infrastructure.Persistence.Infrastructure;
 using CondoPlanner.Application.Services.CommonDTOs.CommomArea;
-using CondoPlanner.Application.Services.CommonDTOs.Condominium;
 using CondoPlanner.Application.Services.CommonDTOs;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using CondoPlanner.Application.Services.CondominiumServices.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CommonAreaController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -45,7 +45,6 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // GET api/<CommonAreaController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -64,7 +63,6 @@ namespace CondoPlanner.API.Controllers
             return Ok(response);
         }
 
-        // POST api/<CommonAreaController>
         [HttpPost]
         public async Task<ActionResult> CreateCommonArea(CreateCommonAreaDto input)
         {

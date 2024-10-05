@@ -2,11 +2,13 @@
 using CondoPlanner.Application.Services.ReservationServices;
 using CondoPlanner.Application.Services.ReservationServices.DTOs;
 using CondoPlanner.Application.Services.CommonDTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ReservationController : ControllerBase
     {
         private readonly IReservationService _reservationService;

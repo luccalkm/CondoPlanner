@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CondoPlanner.Application.Services.CondominiumServices.DTOs;
 
 namespace CondoPlanner.Application.Services.CondominiumServices
 {
-    internal interface ICondominiumService
+    public interface ICondominiumService
     {
+        Task<CondominiumDto> GetCondominiumDetailsAsync(int condominiumId);
+        Task DeleteCondominiumAsync(int id);
+        Task<CondominiumDto> CreateCondominiumAsync(CondominiumCreateDto input);
+        Task<IEnumerable<CondominiumDto>> GetAllCondominumsFromUserAsync(string userId);
     }
 }

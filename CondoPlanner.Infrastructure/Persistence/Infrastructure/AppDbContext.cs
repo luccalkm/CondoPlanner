@@ -14,6 +14,7 @@ namespace CondoPlanner.Infrastructure.Persistence.Infrastructure
         public DbSet<Condominium> Condominiums { get; set; }
         public DbSet<CommonArea> CommonAreas { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<CondominiumResident> CondominiumResidents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,10 +26,18 @@ namespace CondoPlanner.Infrastructure.Persistence.Infrastructure
                 .HasForeignKey(c => c.AdministratorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Condominium>()
-                .HasMany(c => c.ResidentsIds)
+            builder.Entity<CondominiumResident>()
+                .HasKey(cr => new { cr.CondominiumId, cr.ResidentId });
+
+            builder.Entity<CondominiumResident>()
+                .HasOne(cr => cr.Condominium)
+                .WithMany(c => c.Residents)
+                .HasForeignKey(cr => cr.CondominiumId);
+
+            builder.Entity<CondominiumResident>()
+                .HasOne<AppUser>()
                 .WithMany()
-                .UsingEntity(j => j.ToTable("CondominiumResidents"));
+                .HasForeignKey(cr => cr.ResidentId);
         }
     }
 }

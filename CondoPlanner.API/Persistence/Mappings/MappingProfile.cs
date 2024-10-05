@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CondoPlanner.API.Infrastructure.Identity;
 using CondoPlanner.Application.Services.AccountServices.DTOs;
-using CondoPlanner.Application.Services.CommonDTOs.Condominium;
+using CondoPlanner.Application.Services.CondominiumServices.DTOs;
 using CondoPlanner.Domain.Entities;
 
 namespace CondoPlanner.API.Mappings
