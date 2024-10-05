@@ -37,7 +37,7 @@ const MainLayout = () => {
 
     const drawerItemsAdmin = [
         { text: 'Início', path: '/', icon: <HomeRounded /> },
-        { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
+        { text: 'Reservas', path: '/reservation', icon: <CalendarMonthRounded /> },
         { text: 'Moradores', path: '/contact', icon: <GroupRounded /> },
         { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
         { text: 'Condomínio', path: '/condominium', icon: <ApartmentRounded /> },
@@ -72,7 +72,7 @@ const MainLayout = () => {
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
-                        <Button variant="outlined" size="medium" sx={{ color: 'white', borderColor: 'white' }}>
+                        <Button variant="outlined" sx={{ color: 'white', borderColor: 'white', width: '90%' }}>
                             Editar Perfil
                         </Button>
                     </Box>

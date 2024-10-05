@@ -41,14 +41,12 @@ const CondominiumPage = () => {
                 <Box sx={{ width: '100%', textAlign: 'start', marginBottom: 2 }}>
                     <Typography
                         component="h1"
-                        variant="h5"
+                        variant="h4"
                         fontWeight="bold"
                     >
                         Cadastrar Condomínio
                     </Typography>
                 </Box>
-                <Divider sx={{ width: '100%', marginBottom: 3 }} />
-
                 <Box
                     sx={{
                         display: 'flex',
