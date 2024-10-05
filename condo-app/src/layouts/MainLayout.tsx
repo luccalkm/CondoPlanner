@@ -7,19 +7,21 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Toolbar,
+    Typography,
+    Divider,
+    Avatar,
+    Button,
 } from '@mui/material';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
+import { HomeRounded, CalendarMonthRounded, DashboardCustomizeRounded } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
 const MainLayout = () => {
     const drawerItemsAdmin = [
-        { text: 'Início', path: '/' },
-        { text: 'Reservas', path: '/about' },
-        { text: 'Espaços', path: '/contact' },
+        { text: 'Início', path: '/', icon: <HomeRounded /> },
+        { text: 'Reservas', path: '/about', icon: <CalendarMonthRounded /> },
+        { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
     ];
 
     return (
@@ -33,18 +35,40 @@ const MainLayout = () => {
                     '& .MuiDrawer-paper': {
                         width: drawerWidth,
                         boxSizing: 'border-box',
-                        bgcolor: '#0F4B7E', // Define a cor de fundo do drawer
-                        color: 'white', // Define a cor do texto
+                        bgcolor: '#0F4B7E',
+                        color: 'white',
                     },
                 }}
             >
-                <Toolbar /> {/* Este Toolbar também cria um espaço no conteúdo principal */}
+                {/* Header do Drawer */}
+                <Box sx={{ padding: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: "0.6em" }}>
+                        <Avatar sx={{ width: 40, height: 40 }} />
+                        <Box sx={{ marginLeft: 2 }}>
+                            <Typography variant="body1">
+                                Nome do Usuário
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'gray', fontSize: '0.85em' }}>
+                                Condomínio 
+                            </Typography>
+                        </Box>
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
+                        <Button variant="outlined" size="medium" sx={{ color: 'white', borderColor: 'white' }}>
+                            Editar Perfil
+                        </Button>
+                    </Box>
+                </Box>
+
+                <Divider sx={{ my: 1, bgcolor: 'white' }} />
+
+                {/* Lista de Itens do Drawer */}
                 <List>
-                    {drawerItemsAdmin.map((item, index) => (
+                    {drawerItemsAdmin.map((item) => (
                         <ListItem key={item.text} component={RouterLink} disablePadding to={item.path}>
                             <ListItemButton sx={{ color: 'white', '&:hover': { backgroundColor: '#0A3E54' } }}>
                                 <ListItemIcon sx={{ color: 'white' }}>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    {item.icon}
                                 </ListItemIcon>
                                 <ListItemText primary={item.text} />
                             </ListItemButton>
@@ -53,7 +77,6 @@ const MainLayout = () => {
                 </List>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar /> {/* Este Toolbar também cria um espaço no conteúdo principal */}
                 <Outlet /> {/* Renderiza o conteúdo da página aqui */}
             </Box>
         </Box>
