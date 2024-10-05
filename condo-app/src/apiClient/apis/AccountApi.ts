@@ -56,7 +56,7 @@ export class AccountApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/Account/login`,
+            path: `/api/Account/Login`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -88,7 +88,7 @@ export class AccountApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/Account/logout`,
+            path: `/api/Account/Logout`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -106,6 +106,7 @@ export class AccountApi extends runtime.BaseAPI {
     /**
      */
     async apiAccountRegisterPostRaw(requestParameters: ApiAccountRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -121,7 +122,7 @@ export class AccountApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/api/Account/register`,
+            path: `/api/Account/Register`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

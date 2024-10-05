@@ -36,8 +36,9 @@ const LoginLayout = () => {
                     bgcolor="white"
                     borderRadius="10px"
                     boxShadow={3}
-                    p={4}
-                    width="500px"
+                    paddingBottom={5}
+                    minWidth="30%"
+                    maxWidth="40%"
                 >
                     <Outlet /> 
                 </Box>

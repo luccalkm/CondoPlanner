@@ -1,17 +1,134 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/public/icon.png"/>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-        rel="stylesheet"
-        />
+    <link rel="icon" type="image/svg+xml" href="/public/icon.png" />
+    <style>
+        svg#freepik_stories-mobile-login:not(.animated) .animable {
+            opacity: 0;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--background-complete--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) slideDown;
+            animation-delay: 0s;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--Floor--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) lightSpeedRight;
+            animation-delay: 0s;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--Plant--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) slideRight;
+            animation-delay: 0s;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--Padlock--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) lightSpeedRight;
+            animation-delay: 0s;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--Device--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) fadeIn;
+            animation-delay: 0s;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--speech-bubble--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) lightSpeedLeft;
+            animation-delay: 0s;
+        }
+
+        svg#freepik_stories-mobile-login.animated #freepik--Character--inject-79 {
+            animation: 1s 1 forwards cubic-bezier(.36, -0.01, .5, 1.38) slideDown;
+            animation-delay: 0s;
+        }
+
+        @keyframes slideDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes lightSpeedRight {
+            from {
+                transform: translate3d(50%, 0, 0) skewX(-20deg);
+                opacity: 0;
+            }
+
+            60% {
+                transform: skewX(10deg);
+                opacity: 1;
+            }
+
+            80% {
+                transform: skewX(-2deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes slideRight {
+            0% {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes lightSpeedLeft {
+            from {
+                transform: translate3d(-50%, 0, 0) skewX(20deg);
+                opacity: 0;
+            }
+
+            60% {
+                transform: skewX(-10deg);
+                opacity: 1;
+            }
+
+            80% {
+                transform: skewX(2deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CondoPlanner</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="root"></div>
+    <script type='text/javascript'>document.addEventListener('DOMContentLoaded', function () {window.setTimeout(document.querySelector('svg').classList.add('animated'),1000);})</script>
     <script type="module" src="/src/main.tsx"></script>
-  </body>
+</body>
+
 </html>

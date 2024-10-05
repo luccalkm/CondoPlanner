@@ -1,5 +1,8 @@
 ﻿using CondoPlanner.Application.Services.AccountServices;
 using CondoPlanner.Application.Services.AccountServices.DTOs;
+using CondoPlanner.Application.Services.CommonDTOs;
+using CondoPlanner.Application.Services.CondominiumServices.DTOs;
+using CondoPlanner.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CondoPlanner.API.Controllers
@@ -15,37 +18,72 @@ namespace CondoPlanner.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterUserDto input)
         {
             var result = await _accountService.RegisterAsync(input);
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors);
+                var errorMessages = string.Join("; ", result.Errors.Select(e => e.Description));
+                var errorResponse = new ResponseDto<string>
+                {
+                    Success = false,
+                    Message = errorMessages,
+                    Data = null
+                };
+                return BadRequest(errorResponse);
             }
 
-            return Ok(new { message = "User registered successfully" });
+            var response = new ResponseDto<bool>
+            {
+                Success = true,
+                Message = "Usuário registrado com sucesso.",
+                Data = true
+            };
+
+            return Ok(response);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDto input)
         {
             var token = await _accountService.LoginAsync(input);
 
             if (token == null)
             {
-                return Unauthorized(new { message = "Invalid email or password" });
+                var errorResponse = new ResponseDto<string>
+                {
+                    Success = false,
+                    Message = "E-mail ou senha inválidos.",
+                    Data = null
+                };
+                return Unauthorized(errorResponse);
             }
 
-            return Ok(new { token });
+            var successResponse = new ResponseDto<string>
+            {
+                Success = true,
+                Message = "Login realizado com sucesso.",
+                Data = token
+            };
+
+            return Ok(successResponse);
         }
 
-        [HttpPost("logout")]
+        [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
             await _accountService.LogoutAsync();
-            return Ok(new { message = "Logged out successfully" });
+
+            var successResponse = new ResponseDto<bool>
+            {
+                Success = true,
+                Message = "Logout realizado com sucesso.",
+                Data = true
+            };
+
+            return Ok(successResponse);
         }
     }
 }
