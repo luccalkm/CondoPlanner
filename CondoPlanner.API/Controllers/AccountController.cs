@@ -16,9 +16,9 @@ namespace CondoPlanner.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserDto registerDto)
+        public async Task<IActionResult> Register(RegisterUserDto input)
         {
-            var result = await _accountService.RegisterAsync(registerDto);
+            var result = await _accountService.RegisterAsync(input);
 
             if (!result.Succeeded)
             {
@@ -29,9 +29,9 @@ namespace CondoPlanner.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto input)
         {
-            var token = await _accountService.LoginAsync(loginDto);
+            var token = await _accountService.LoginAsync(input);
 
             if (token == null)
             {

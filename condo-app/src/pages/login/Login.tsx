@@ -1,6 +1,6 @@
-import { useState } from 'react';
+// src/pages/login/LoginPage.tsx
+import React, { useState } from 'react';
 import {
-    Button,
     Link,
     Typography,
     Container,
@@ -8,32 +8,51 @@ import {
     TextField,
     Box,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; 
+import { useTheme } from '@mui/material/styles';
+import SubmitButton from "../../layouts/Buttons/SubmitButton";
 
-
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); 
-
-    const handleSubmit = () => {
-        console.log('Login', {email , password})
-        navigate('/home');
-    };
+    const theme = useTheme();
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    mt: theme.spacing(8),
+                }}
+            >
+                <Box
+                    component="img"
                     src="/condo-logo.png"
                     alt="Logo"
-                    style={{ width: '70%', height: 'auto', marginBottom: '3.6em' }}
+                    sx={{
+                        width: '70%',
+                        height: 'auto',
+                        mb: theme.spacing(6),
+                    }}
                 />
-                <Typography component="h1" variant="h5" fontWeight={'bold'} marginBottom={2}>
+                <Typography
+                    component="h1"
+                    variant="h5"
+                    fontWeight="bold"
+                    sx={{ mb: theme.spacing(2) }}
+                >
                     Faça login em sua conta
                 </Typography>
-                <div style={{ width: '100%', marginTop: 16 }}>
+                <Box
+                    component="form"
+                    noValidate
+                    sx={{
+                        mt: theme.spacing(1),
+                        width: '100%',
+                    }}
+                >
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -46,6 +65,10 @@ const LoginPage = () => {
                         autoFocus
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        sx={{
+                            backgroundColor: theme.palette.background.paper,
+                            borderRadius: theme.shape.borderRadius,
+                        }}
                     />
                     <TextField
                         variant="outlined"
@@ -59,27 +82,51 @@ const LoginPage = () => {
                         autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        sx={{
+                            backgroundColor: theme.palette.background.paper,
+                            borderRadius: theme.shape.borderRadius,
+                        }}
                     />
-                    <Link href="#" variant="body2">
+                    <Link
+                        href="#"
+                        variant="body2"
+                        sx={{
+                            display: 'block',
+                            textAlign: 'right',
+                            mt: theme.spacing(1),
+                            color: theme.palette.primary.main,
+                        }}
+                    >
                         Esqueceu a senha?
                     </Link>
-                    <Button
-                        type="submit"
+                    <SubmitButton
+                        label="Entrar"
                         fullWidth
-                        variant="contained"
-                        color="primary"
-                        style={{ margin: '24px 0 24px' }}
-                        onClick={handleSubmit}
+                        sx={{
+                            mt: theme.spacing(3),
+                            mb: theme.spacing(3),
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: theme.spacing(2),
+                            mb: theme.spacing(2),
+                            width: '100%',
+                        }}
                     >
-                        Entrar
-                    </Button>
-                    <Box display="flex" justifyContent="center" marginBottom={2} marginTop={2} width="100%">
-                        <Link href="/register" variant="body1">
+                        <Link 
+                            href="/register" 
+                            variant="button"
+                            underline="none"
+                            sx={{ color: theme.palette.primary.main }}
+                        >
                             Criar conta
                         </Link>
                     </Box>
-                </div>
-            </div>
+                </Box>
+            </Box>
         </Container>
     );
 };
