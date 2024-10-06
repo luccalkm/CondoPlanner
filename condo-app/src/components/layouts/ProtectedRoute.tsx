@@ -5,7 +5,6 @@ export const ProtectedRoute = () => {
     const auth = useAuth();
 
     if (!auth?.token) {
-        debugger;
         return <Navigate to={"/login"} replace />
     }
 
