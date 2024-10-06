@@ -30,7 +30,7 @@ export const ApiConfiguration = new Configuration({
                     } else {
                         const jsonClone = async () => {
                             const result = await ret.clone().json();
-                            return result.data;
+                            return result;
                         };
                         ret.json = jsonClone;
                     }
