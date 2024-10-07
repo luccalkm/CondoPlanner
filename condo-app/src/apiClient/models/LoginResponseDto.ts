@@ -37,6 +37,12 @@ export interface LoginResponseDto {
      * @memberof LoginResponseDto
      */
     email?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginResponseDto
+     */
+    userId?: string | null;
 }
 
 /**
@@ -59,6 +65,7 @@ export function LoginResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'token': json['token'] == null ? undefined : json['token'],
         'username': json['username'] == null ? undefined : json['username'],
         'email': json['email'] == null ? undefined : json['email'],
+        'userId': json['userId'] == null ? undefined : json['userId'],
     };
 }
 
@@ -71,6 +78,7 @@ export function LoginResponseDtoToJSON(value?: LoginResponseDto | null): any {
         'token': value['token'],
         'username': value['username'],
         'email': value['email'],
+        'userId': value['userId'],
     };
 }
 

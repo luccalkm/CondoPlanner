@@ -45,7 +45,7 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
 
 const MainLayout = () => {
     const theme = useTheme();
-    const { logout, username } = useAuth();
+    const { logout, loginResponse } = useAuth();
 
     const drawerItemsAdmin = [
         { text: 'Início', path: '/', icon: <HomeRounded /> },
@@ -72,7 +72,7 @@ const MainLayout = () => {
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="body1">
-                                        {username}
+                                        {loginResponse?.username}
                                     </Typography>
                                     <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
                                         Condomínio

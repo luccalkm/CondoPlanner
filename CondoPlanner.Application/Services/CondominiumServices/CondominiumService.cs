@@ -97,7 +97,12 @@ namespace CondoPlanner.Application.Services.CondominiumServices
             var admin = await _userManager.FindByIdAsync(input.IdAdministrator);
 
             if (admin == null)
-                throw new Exception("Administrator not found");
+                throw new Exception("Usuário informado não encontrado.");
+
+            if (admin is { IsAdmin: false })
+            {
+                throw new Exception("Usuário não é administrador e não pode registar um condomínio.");
+            }
 
             var condominium = _mapper.Map<Condominium>(input);
 

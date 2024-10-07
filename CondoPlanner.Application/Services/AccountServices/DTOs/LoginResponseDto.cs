@@ -11,5 +11,6 @@ namespace CondoPlanner.Application.Services.AccountServices.DTOs
         public string? Token { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }
+        public string? UserId { get; set; }
     }
 }

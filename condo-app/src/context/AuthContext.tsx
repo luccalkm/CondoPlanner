@@ -1,57 +1,65 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { LoginResponseDto } from "../apiClient";
 
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { LoginResponseDto } from "../apiClient";
 interface AuthContextType {
-    token: string | null;
-    username: string | null;
-    email: string | null;
+    loginResponse: LoginResponseDto | undefined;
     login: (loginRes: LoginResponseDto) => void;
     logout: () => void;
+    isLoggedIn: () => boolean;
 }
-
 const AuthContext = createContext<AuthContextType>({
-    token: null,
-    username: null,
-    email: null,
+    loginResponse: undefined,
+    isLoggedIn: () => { return false },
     login: () => { },
     logout: () => { },
 });
-
 export const useAuth = (): AuthContextType => {
     return useContext(AuthContext);
 }
 
-export const AuthProvider = ({ children }) => {
-    const [authState, setAuthState] = useState<LoginResponseDto | null>(() => {
-        const storedAuth = localStorage.getItem('loginRes');
-        return storedAuth ? JSON.parse(storedAuth) : null;
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const [token, setToken] = useState<string | null>(() => {
+        return localStorage.getItem('token');
     });
 
+    const [loginResponse, setLoginResponse] = useState<LoginResponseDto>();
+
     useEffect(() => {
-        if (authState?.token) {
-            localStorage.setItem('loginRes', JSON.stringify(authState));
+        if (token) {
+            localStorage.setItem('token', token);
         } else {
-            localStorage.removeItem('loginRes');
+            localStorage.removeItem('token');
         }
-    }, [authState]);
+    }, [token]);
+
+    const isLoggedIn = (): boolean => {
+        const token = localStorage.getItem('token');
+        return token != null;
+    }
 
     const login = (loginRes: LoginResponseDto) => {
         if (loginRes && loginRes.token) {
-            setAuthState(loginRes);
+            setToken(loginRes.token);
+            setLoginResponse({
+                ...loginRes
+            })
         }
     };
 
     const logout = () => {
-        setAuthState(null);
-        localStorage.removeItem('loginRes');
+        setLoginResponse(undefined)
+        localStorage.removeItem('token');
     }
 
     return (
         <AuthContext.Provider
             value={{
-                token: authState?.token || null,
-                username: authState?.username || null,
-                email: authState?.email || null,
+                isLoggedIn,
+                loginResponse,
                 login,
                 logout,
             }}

@@ -4,8 +4,13 @@ import { useState } from "react";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import { CondominiumApi } from "../../apiClient";
 import { ApiConfiguration } from "../../apiClient/apiConfig";
+import { useAuth } from "../../context/AuthContext";
+import { useSnackbar } from "../../context/SnackBarContext";
 
 export const Condominium = () => {
+    const { loginResponse } = useAuth();
+    const { showSnackbar } = useSnackbar();
+    
     const [formData, setFormData] = useState({
         name: '',
         address: '',
@@ -28,7 +33,7 @@ export const Condominium = () => {
 
         const { name, address, numberOfResidences, cep, city, state } = formData;
         if (!name || !address || !numberOfResidences || !cep || !city || !state) {
-            alert("Por favor, preencha todos os campos obrigatórios.");
+            showSnackbar("Por favor, preencha todos os campos obrigatórios.", "error");
             return;
         }
 
@@ -37,23 +42,27 @@ export const Condominium = () => {
             numberOfResidences: parseInt(formData.numberOfResidences, 10),
         };
 
-        const api = new CondominiumApi(ApiConfiguration);
-        const res = await api.apiCondominiumPost({
-            condominiumCreateDto: {
-                ...submissionData
-            }
-        });
+        try {
+            const api = new CondominiumApi(ApiConfiguration);
+            const res = await api.apiCondominiumPost({
+                condominiumCreateDto: {
+                    ...submissionData,
+                    idAdministrator: loginResponse?.userId
+                }
+            });
+            
+            setFormData({
+                name: '',
+                address: '',
+                numberOfResidences: '',
+                cep: '',
+                city: '',
+                state: '',
+            });
+        }
+        finally {
 
-        console.log(res)
-
-        setFormData({
-            name: '',
-            address: '',
-            numberOfResidences: '',
-            cep: '',
-            city: '',
-            state: '',
-        });
+        }
     };
 
     return (
