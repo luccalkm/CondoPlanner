@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LoadingButton from '@mui/lab/LoadingButton';
 import {
     Link,
     Typography,
@@ -15,6 +16,7 @@ import { AccountApi } from '../../../apiClient';
 import { ApiConfiguration } from '../../../apiClient/apiConfig';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Home } from '@mui/icons-material';
 
 const LoginPage: React.FC = () => {
     const [loginForm, setLoginForm] = useState<LoginDto>({
@@ -24,6 +26,7 @@ const LoginPage: React.FC = () => {
     const theme = useTheme();
     const authContext = useAuth();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [snackbar, setSnackbar] = useState<{
         open: boolean;
@@ -56,8 +59,20 @@ const LoginPage: React.FC = () => {
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
-        const accountApi = new AccountApi(ApiConfiguration);
+        setLoading(true);
+
+        if (!loginForm.email && !loginForm.password) {
+            setSnackbar({
+                open: true,
+                message: "Login ou senha inválidos. Tente novamente.",
+                severity: "error"
+            });
+            setLoading(false);
+            return;
+        }
+
         try {
+            const accountApi = new AccountApi(ApiConfiguration);
             const response = await accountApi.apiAccountLoginPost({
                 loginDto: {
                     ...loginForm
@@ -68,11 +83,16 @@ const LoginPage: React.FC = () => {
             if (!response.success)
                 throw new Error(response?.message?.toString());
 
-            const token = response.data;
-            authContext?.login(token!);
-            localStorage.setItem('token', token!);
-
-            navigate('/');
+            setSnackbar({
+                open: true,
+                message: "Login realizado com sucesso! Redirecionando para página principal...",
+                severity: "success",
+            });
+            const loginRes = response.data;
+            authContext?.login(loginRes);
+            setTimeout(() => {
+                navigate('/');
+            }, 1500)
         } catch (error: any) {
             const errorMessage = error?.message || "Erro ao realizar login. Verifique os dados e tente novamente.";
             setSnackbar({
@@ -80,6 +100,8 @@ const LoginPage: React.FC = () => {
                 message: errorMessage,
                 severity: "error",
             });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -159,15 +181,18 @@ const LoginPage: React.FC = () => {
                         </Grid2>
                     </Grid2>
                     <Grid2 size={12}>
-                        <SubmitButton
+                        <LoadingButton
+                            variant='contained'
+                            disabled={loading}
                             onClick={handleSubmit}
-                            label="Entrar"
+                            loading={loading}
                             fullWidth
                             sx={{
-                                mt: theme.spacing(3),
-                                mb: theme.spacing(3),
+                                my: theme.spacing(3)
                             }}
-                        />
+                        >
+                            Entrar
+                        </LoadingButton>
                     </Grid2>
                     <Grid2 container justifyContent="center">
                         <Grid2>
@@ -185,9 +210,9 @@ const LoginPage: React.FC = () => {
             </Grid2>
             <Snackbar
                 open={snackbar.open}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
                 <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
                     {snackbar.message}

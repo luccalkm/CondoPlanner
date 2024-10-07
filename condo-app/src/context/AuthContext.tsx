@@ -1,45 +1,62 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { LoginResponseDto } from "../apiClient";
 
 interface AuthContextType {
     token: string | null;
-    login: (token: string) => void;
+    username: string | null;
+    email: string | null;
+    login: (loginRes: LoginResponseDto) => void;
     logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+    token: null,
+    username: null,
+    email: null,
+    login: () => { },
+    logout: () => { },
+});
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
     return useContext(AuthContext);
 }
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+    const [authState, setAuthState] = useState<LoginResponseDto | null>(() => {
+        const storedAuth = localStorage.getItem('loginRes');
+        return storedAuth ? JSON.parse(storedAuth) : null;
+    });
 
     useEffect(() => {
-        if (token) {
-            localStorage.setItem('token', token);
+        if (authState?.token) {
+            localStorage.setItem('loginRes', JSON.stringify(authState));
         } else {
-            localStorage.removeItem('token')
+            localStorage.removeItem('loginRes');
         }
-    }, [token])
+    }, [authState]);
 
-    const login = (newToken: string | null) => {
-        setToken(newToken);
+    const login = (loginRes: LoginResponseDto) => {
+        if (loginRes && loginRes.token) {
+            setAuthState(loginRes);
+        }
     };
 
     const logout = () => {
-        setToken(null)
+        setAuthState(null);
+        localStorage.removeItem('loginRes');
     }
-    
+
     return (
         <AuthContext.Provider
             value={{
-                token,
+                token: authState?.token || null,
+                username: authState?.username || null,
+                email: authState?.email || null,
                 login,
                 logout,
             }}
         >
-            { children }
+            {children}
         </AuthContext.Provider>
-    )
+    );
 }

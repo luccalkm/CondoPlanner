@@ -353,7 +353,7 @@ const RegisterPage: React.FC = () => {
                     </Box>
                 </Grid2>
             </Grid2>
-            {/* Snackbar para Feedback ao Usuário */}
+            
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={6000}

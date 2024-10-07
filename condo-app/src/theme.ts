@@ -34,7 +34,6 @@ let theme = createTheme({
             primary: '#1F2937',
             secondary: '#6B7280',
         },
-
         grey: {
             50: '#F9FAFB',
             100: '#F3F4F6',
@@ -109,35 +108,10 @@ let theme = createTheme({
             lineHeight: 1.66,
             letterSpacing: '0.033em',
         },
-
     },
     spacing: 8,
     shape: {
         borderRadius: 8,
-    },
-    components: {
-
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    borderRadius: 8,
-                    textTransform: 'none',
-                    padding: '8px 16px',
-                },
-                containedPrimary: {
-                    backgroundColor: primaryColor,
-                    '&:hover': {
-                        backgroundColor: '#0D3B6C',
-                    },
-                },
-                containedSecondary: {
-                    backgroundColor: secondaryColor,
-                    '&:hover': {
-                        backgroundColor: '#E55A5A',
-                    },
-                },
-            },
-        },
     },
 });
 

@@ -1,5 +1,6 @@
+import React from 'react';
 import {
-    Box,
+    Grid,
     CssBaseline,
     Drawer,
     List,
@@ -13,6 +14,7 @@ import {
     Button,
     useTheme,
     useMediaQuery,
+    styled,
 } from '@mui/material';
 import { Link as RouterLink, Outlet } from 'react-router-dom';
 import {
@@ -20,75 +22,138 @@ import {
     CalendarMonthRounded,
     DashboardCustomizeRounded,
     ApartmentRounded,
-    GroupRounded
+    GroupRounded,
+    Logout
 } from '@mui/icons-material';
+import { useAuth } from '../../context/AuthContext';
 
 const drawerWidth = 320;
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+        width: drawerWidth,
+        boxSizing: 'border-box',
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        borderRight: `1px solid ${theme.palette.divider}`,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+}));
 
 const MainLayout = () => {
     const theme = useTheme();
+    const { logout, username } = useAuth();
 
     const drawerItemsAdmin = [
         { text: 'Início', path: '/', icon: <HomeRounded /> },
         { text: 'Reservas', path: '/reservation', icon: <CalendarMonthRounded /> },
         { text: 'Moradores', path: '/contact', icon: <GroupRounded /> },
-        { text: 'Espaços', path: '/contact', icon: <DashboardCustomizeRounded /> },
+        { text: 'Espaços', path: '/spaces', icon: <DashboardCustomizeRounded /> },
         { text: 'Condomínio', path: '/condominium', icon: <ApartmentRounded /> },
     ];
 
+    const handleLogout = () => {
+        logout();
+    };
+
     return (
-        <Box sx={{ display: 'flex' }}>
-            <Drawer
-                variant="permanent"
+        <Grid container>
+            <CssBaseline />
+            <StyledDrawer variant="permanent">
+                <Grid container direction="column">
+                    <Grid container spacing={2} sx={{ p: theme.spacing(2) }}>
+                        <Grid item xs={12}>
+                            <Grid container alignItems="center" spacing={2}>
+                                <Grid item>
+                                    <Avatar sx={{ width: 40, height: 40 }} />
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="body1">
+                                        {username}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: theme.palette.grey[300] }}>
+                                        Condomínio
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                sx={{
+                                    color: theme.palette.primary.contrastText,
+                                    borderColor: theme.palette.primary.contrastText,
+                                    '&:hover': {
+                                        background: theme.palette.primary.dark,
+                                    },
+                                }}
+                            >
+                                Editar Perfil
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Divider sx={{ bgcolor: theme.palette.grey[300] }} />
+                    <List>
+                        {drawerItemsAdmin.map((item) => (
+                            <ListItem
+                                key={item.text}
+                                component={RouterLink}
+                                disablePadding
+                                to={item.path}
+                            >
+                                <ListItemButton
+                                    sx={{
+                                        color: theme.palette.primary.contrastText,
+                                        '&:hover': {
+                                            backgroundColor: theme.palette.primary.dark,
+                                        },
+                                    }}
+                                >
+                                    <ListItemIcon sx={{ color: theme.palette.primary.contrastText }}>
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Grid>
+
+                {/* Rodapé com botão de logout */}
+                <Grid item sx={{ p: 2 }}>
+                    <Divider sx={{ bgcolor: theme.palette.grey[300] }} />
+                    <Button
+                        fullWidth
+                        startIcon={<Logout />}
+                        variant="outlined"
+                        sx={{
+                            marginTop: 2,
+                        }}
+                        color='secondary'
+                        onClick={handleLogout}
+                    >
+                        Sair
+                    </Button>
+                </Grid>
+            </StyledDrawer>
+
+            <Grid
+                item
+                component="main"
                 sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                        bgcolor: theme.palette.primary.main,
-                        color: 'white',
-                    },
+                    flexGrow: 1,
+                    p: theme.spacing(3),
+                    backgroundColor: theme.palette.background.default,
+                    minHeight: '100vh',
                 }}
             >
-                <Box sx={{ padding: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: "0.6em", paddingLeft: '0.8em' }}>
-                        <Avatar sx={{ width: 40, height: 40 }} />
-                        <Box sx={{ marginLeft: 2 }}>
-                            <Typography variant="body1">
-                                Nome do Usuário
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'gray', fontSize: '0.85em' }}>
-                                Condomínio
-                            </Typography>
-                        </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
-                        <Button variant="outlined" sx={{ color: 'white', borderColor: 'white', width: '90%' }}>
-                            Editar Perfil
-                        </Button>
-                    </Box>
-                </Box>
-
-                <Divider sx={{ my: 1, bgcolor: 'white' }} />
-
-                <List style={{paddingLeft: '0.8em'}}>
-                    {drawerItemsAdmin.map((item) => (
-                        <ListItem key={item.text} component={RouterLink} disablePadding to={item.path}>
-                            <ListItemButton sx={{ color: 'white', '&:hover': { backgroundColor: '#0A3E54' } }}>
-                                <ListItemIcon sx={{ color: 'white' }}>
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText primary={item.text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Outlet /> {/* Renderiza o conteúdo da página aqui */}
-            </Box>
-        </Box>
+                <Outlet />
+            </Grid>
+        </Grid>
     );
 };
 

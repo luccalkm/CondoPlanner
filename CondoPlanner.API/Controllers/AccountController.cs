@@ -47,26 +47,26 @@ namespace CondoPlanner.API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ResponseDto<string>> Login(LoginDto input)
+        public async Task<ResponseDto<LoginResponseDto>> Login(LoginDto input)
         {
             try
             {
-                var token = await _accountService.LoginAsync(input);
+                var loginResponseDto = await _accountService.LoginAsync(input);
 
-                if (token == null)
+                if (loginResponseDto == null || string.IsNullOrEmpty(loginResponseDto.Token))
                     throw new Exception("E-mail ou senha inválidos.");
 
-                return new ResponseDto<string>
+                return new ResponseDto<LoginResponseDto>
                 {
                     StatusCode = HttpStatusCode.OK,
                     Success = true,
                     Message = "Login realizado com sucesso.",
-                    Data = token
+                    Data = loginResponseDto
                 };
             }
             catch (Exception e)
             {
-                return new ResponseDto<string>
+                return new ResponseDto<LoginResponseDto>
                 {
                     StatusCode = HttpStatusCode.Unauthorized,
                     Success = false,

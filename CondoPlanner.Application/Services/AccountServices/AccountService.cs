@@ -45,7 +45,7 @@ namespace CondoPlanner.Application.Services.AccountServices
             return await _userManager.CreateAsync(user, registerDto.Password);
         }
 
-        public async Task<string?> LoginAsync(LoginDto loginDto)
+        public async Task<LoginResponseDto> LoginAsync(LoginDto loginDto)
         {
             if (string.IsNullOrEmpty(loginDto.Email) || string.IsNullOrEmpty(loginDto.Password))
                 throw new Exception("Credenciais de login são inválidas");
@@ -64,7 +64,12 @@ namespace CondoPlanner.Application.Services.AccountServices
                 throw new Exception("Senha inválida. Por favor, tente novamente.");
             }
 
-            return GenerateJwtToken(user);
+            return new LoginResponseDto 
+            {
+                Email = loginDto.Email,
+                Username = user.FullName,
+                Token = GenerateJwtToken(user),
+            };
         }
 
         public async Task LogoutAsync()

@@ -23,6 +23,7 @@ namespace CondoPlanner.API.Controllers
             _mapper = mapper;
         }
 
+        // TODO: Mudar para UserService
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetAllCondominumsFromUser(string userId)
         {

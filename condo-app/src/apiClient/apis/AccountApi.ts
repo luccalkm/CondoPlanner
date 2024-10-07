@@ -16,16 +16,16 @@
 import * as runtime from '../runtime';
 import type {
   LoginDto,
+  LoginResponseDtoResponseDto,
   RegisterUserDto,
-  StringResponseDto,
 } from '../models/index';
 import {
     LoginDtoFromJSON,
     LoginDtoToJSON,
+    LoginResponseDtoResponseDtoFromJSON,
+    LoginResponseDtoResponseDtoToJSON,
     RegisterUserDtoFromJSON,
     RegisterUserDtoToJSON,
-    StringResponseDtoFromJSON,
-    StringResponseDtoToJSON,
 } from '../models/index';
 
 export interface ApiAccountLoginPostRequest {
@@ -43,7 +43,7 @@ export class AccountApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiAccountLoginPostRaw(requestParameters: ApiAccountLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StringResponseDto>> {
+    async apiAccountLoginPostRaw(requestParameters: ApiAccountLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LoginResponseDtoResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -66,12 +66,12 @@ export class AccountApi extends runtime.BaseAPI {
             body: LoginDtoToJSON(requestParameters['loginDto']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => StringResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => LoginResponseDtoResponseDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiAccountLoginPost(requestParameters: ApiAccountLoginPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StringResponseDto> {
+    async apiAccountLoginPost(requestParameters: ApiAccountLoginPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LoginResponseDtoResponseDto> {
         const response = await this.apiAccountLoginPostRaw(requestParameters, initOverrides);
         return await response.value();
     }

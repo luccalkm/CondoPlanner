@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
                     Notificações
                 </Button>
             </Box>
-            <Divider sx={{ marginTop: 1 }} /> {/* Divider abaixo do título e botão */}
+            <Divider sx={{ marginTop: 1 }} />
         </>
     );
 };
