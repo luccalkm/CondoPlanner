@@ -123,13 +123,11 @@ const MainLayout = () => {
                     </List>
                 </Grid>
 
-                {/* Rodapé com botão de logout */}
                 <Grid item sx={{ p: 2 }}>
-                    <Divider sx={{ bgcolor: theme.palette.grey[300] }} />
                     <Button
                         fullWidth
                         startIcon={<Logout />}
-                        variant="outlined"
+                        variant='contained'
                         sx={{
                             marginTop: 2,
                         }}

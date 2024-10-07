@@ -28,7 +28,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [token, setToken] = useState<string | null>(() => {
         return localStorage.getItem('token');
     });
-
     
     const [userId, setUserId] = useState<string | null>(() => {
         return localStorage.getItem('sessionId');

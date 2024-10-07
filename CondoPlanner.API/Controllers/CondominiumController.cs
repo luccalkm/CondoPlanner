@@ -14,7 +14,7 @@ namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class CondominiumController : ControllerBase
     {
         private readonly ICondominiumService _condominiumService;
@@ -78,13 +78,13 @@ namespace CondoPlanner.API.Controllers
                     Data = condominiumDto
                 };
             }
-            catch
+            catch (Exception ex)
             {
                 return new ResponseDto<CondominiumDto>
                 {
                     StatusCode = HttpStatusCode.InternalServerError,
                     Success = false,
-                    Message = "Ocorreu um erro ao registrar o condomínio.",
+                    Message = ex.Message ?? "Ocorreu um erro ao registrar o condomínio.",
                     Data = null
                 };
             }

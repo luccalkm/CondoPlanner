@@ -1,6 +1,6 @@
 import { Typography, Paper, Box, Grid, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
-import { CondominiumApi } from "../../apiClient";
+import { CondominiumApi, CondominiumDto } from "../../apiClient";
 import { ApiConfiguration } from "../../apiClient/apiConfig";
 import SubmitButton from "../../components/Buttons/SubmitButton";
 import Header from "../../components/header/Header";
@@ -23,10 +23,9 @@ export const Condominium: React.FC = () => {
     const { showSnackbar } = useSnackbar();
     
     const [formData, setFormData] = useState(DEFAULT_VALUE);
-    const [isCondominiumRegistered, setIsCondominiumRegistered] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
-    const [condominiumId, setCondominiumId] = useState<number | undefined>(undefined);
+    const [condominium, setCondominium] = useState<CondominiumDto | undefined>(undefined);
 
     useEffect(() => {
         handleCondominiumRegistered();
@@ -44,15 +43,13 @@ export const Condominium: React.FC = () => {
 
         try {
             const res = await api.apiCondominiumAdminUserIdGet({ userId });
-            console.log(res);
 
             if (!res.data) return;
 
             if (res!.data!.length > 0) {
-                setIsCondominiumRegistered(true);
                 setIsEditMode(true);
                 const condominium = res.data[0]!;
-                setCondominiumId(condominium.id!); // Supondo que 'id' seja o identificador
+                setCondominium(condominium);
                 setFormData({
                     name: condominium.name || '',
                     address: condominium.address || '',
@@ -62,7 +59,6 @@ export const Condominium: React.FC = () => {
                     state: ""
                 });
             } else {
-                setIsCondominiumRegistered(false);
                 setIsEditMode(false);
                 setFormData(DEFAULT_VALUE);
             }
@@ -114,12 +110,15 @@ export const Condominium: React.FC = () => {
                         idAdministrator: getLoggedId()
                     }
                 });
+                debugger;
+                if (!res.success) {
+                    showSnackbar(res?.message || "Um erro inesperado ocorreu ao registar o condomínio!" , "error");
+                    return;
+                }
 
                 showSnackbar("Condomínio registrado com sucesso!", "success");
                 setFormData(DEFAULT_VALUE);
-                setIsCondominiumRegistered(true);
                 setIsEditMode(true);
-                setCondominiumId(res!.data!.id);
             // }
         } catch (ex: any) {
             const errorMessage = ex?.response?.data?.message || "Erro ao realizar operação.";
