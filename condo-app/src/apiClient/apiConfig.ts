@@ -24,7 +24,15 @@ export const ApiConfiguration = new Configuration({
                 const ret = context.response;
                 const contentType = context.response.headers.get('content-type');
                 if (contentType && contentType.includes('json')) {
-                    if ([400, 401, 500].includes(context.response.status)) {
+                    if (context.response.status === 400){
+                        throw new Error(`Ocorreu um erro. Algum campo obrigatório não foi preenchido para envio.`);
+                    }
+
+                    if (context.response.status === 401){
+                        throw new Error(`Permissão negada, efetue a autenticação e tente novamente.`);
+                    }
+
+                    if ([500].includes(context.response.status)) {
                         const json = await context.response.json();
                         throw new Error(`${json?.message || json?.error?.message}`);
                     } else {

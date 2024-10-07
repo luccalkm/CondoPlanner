@@ -3,6 +3,9 @@ using CondoPlanner.Application.Services.AccountServices.DTOs;
 using CondoPlanner.Application.Services.CommonDTOs;
 using CondoPlanner.Application.Services.CondominiumServices.DTOs;
 using CondoPlanner.Domain.Entities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

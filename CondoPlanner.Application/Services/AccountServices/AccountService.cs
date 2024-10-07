@@ -66,8 +66,9 @@ namespace CondoPlanner.Application.Services.AccountServices
 
             return new LoginResponseDto 
             {
-                Email = loginDto.Email,
-                Username = user.FullName,
+                UserId = user.Id,
+                Email = user.Email,
+                Username = user.UserName,
                 Token = GenerateJwtToken(user),
             };
         }

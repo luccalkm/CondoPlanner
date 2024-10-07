@@ -9,6 +9,8 @@ models/CommonAreaDto.ts
 models/Condominium.ts
 models/CondominiumCreateDto.ts
 models/CondominiumDto.ts
+models/CondominiumDtoIEnumerableResponseDto.ts
+models/CondominiumDtoResponseDto.ts
 models/CondominiumResident.ts
 models/CreateCommonAreaDto.ts
 models/CreateOrEditReservationDto.ts

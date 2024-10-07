@@ -1,6 +1,7 @@
 import { Typography, Box, Link, Paper, Grid2, Grid } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import theme from '../../theme';
+import { useAuth } from '../../context/AuthContext';
 
 const Copyright = () => {
     return (
@@ -38,6 +39,12 @@ const FormLogo = () => {
 }
 
 const LoginLayout = () => {
+    const { isLoggedIn } = useAuth();
+
+    if (isLoggedIn()) {
+        return <Navigate to={"/"} replace />
+    }
+    
     return (
         <Box
             display="flex"

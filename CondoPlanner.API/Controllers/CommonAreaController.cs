@@ -7,12 +7,13 @@ using CondoPlanner.Application.Services.CommonDTOs.CommomArea;
 using CondoPlanner.Application.Services.CommonDTOs;
 using CondoPlanner.Application.Services.CondominiumServices.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CommonAreaController : ControllerBase
     {
         private readonly AppDbContext _context;

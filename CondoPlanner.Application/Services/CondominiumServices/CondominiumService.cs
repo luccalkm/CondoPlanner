@@ -26,12 +26,13 @@ namespace CondoPlanner.Application.Services.CondominiumServices
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CondominiumDto>> GetAllCondominumsFromUserAsync(string userId)
+        public async Task<IEnumerable<CondominiumDto>> GetCondominiumFromUserId(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+
             if (user == null)
             {
-                throw new KeyNotFoundException("User not found.");
+                throw new KeyNotFoundException("Não foi possível encontrar o usuário. Efetue a autenticação e tente novamente.");
             }
 
             var managedCondominiums = await _context.Condominiums
@@ -97,7 +98,12 @@ namespace CondoPlanner.Application.Services.CondominiumServices
             var admin = await _userManager.FindByIdAsync(input.IdAdministrator);
 
             if (admin == null)
-                throw new Exception("Administrator not found");
+                throw new Exception("Usuário informado não encontrado.");
+
+            if (admin is { IsAdmin: false })
+            {
+                throw new Exception("Usuário não é administrador e não pode registar um condomínio.");
+            }
 
             var condominium = _mapper.Map<Condominium>(input);
 

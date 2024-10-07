@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Header from "../../components/header/Header";
 import { useAuth } from "../../context/AuthContext";
-import { Button, Card, CardActions, CardContent, CardMedia, Divider, Grid, Typography } from "@mui/material";
-import theme from "../../theme";
-import demo1 from "/demo1.png";
+import { Grid, Typography } from "@mui/material";
 import SummaryCard from "../../components/SummaryCard";
 
 const HomePage = () => {
     const [reservations, setReservations] = useState(0);
-    const authInfo = useAuth();
+    const { loginResponse } = useAuth();
 
-    const welcomeMessage: string = authInfo.username
-        ? `Seja bem vindo, ${authInfo.username}!`
+    const welcomeMessage: string = loginResponse?.username
+        ? `Seja bem vindo, ${loginResponse?.username}!`
         : `Seja bem vindo ao CondoPlanner!`;
 
     const handleOnViewMore = () => {

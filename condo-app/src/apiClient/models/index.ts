@@ -5,6 +5,8 @@ export * from './CommonAreaDto';
 export * from './Condominium';
 export * from './CondominiumCreateDto';
 export * from './CondominiumDto';
+export * from './CondominiumDtoIEnumerableResponseDto';
+export * from './CondominiumDtoResponseDto';
 export * from './CondominiumResident';
 export * from './CreateCommonAreaDto';
 export * from './CreateOrEditReservationDto';

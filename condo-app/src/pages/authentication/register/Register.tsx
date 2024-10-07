@@ -14,15 +14,13 @@ import {
     ListItem,
     ListItemIcon,
     Tooltip,
-    Snackbar,
-    Alert,
 } from '@mui/material';
 import SubmitButton from '../../../components/buttons/SubmitButton';
 import { AccountApi, RegisterUserDto } from "../../../apiClient";
 import { ApiConfiguration } from "../../../apiClient/apiConfig";
 import { CheckCircle, Cancel } from "@mui/icons-material";
-import theme from "../../../theme";
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from '../../../context/SnackBarContext';
 
 const passwordRules = {
     requireDigit: {
@@ -63,27 +61,8 @@ const RegisterPage: React.FC = () => {
 
     const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-    const [snackbar, setSnackbar] = useState<{
-        open: boolean;
-        message: string;
-        severity: 'success' | 'error';
-    }>({
-        open: false,
-        message: '',
-        severity: 'success',
-    });
-
     const navigate = useNavigate();
-
-    const handleCloseSnackbar = (
-        event?: React.SyntheticEvent | Event,
-        reason?: string
-    ) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setSnackbar((prev) => ({ ...prev, open: false }));
-    };
+    const { showSnackbar } = useSnackbar();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
@@ -113,21 +92,13 @@ const RegisterPage: React.FC = () => {
         event.preventDefault();
 
         if (!passwordsMatch) {
-            setSnackbar({
-                open: true,
-                message: "As senhas não coincidem.",
-                severity: "error",
-            });
+            showSnackbar("As senhas não coincidem.", "error");
             return;
         }
 
         const allRulesPassed = Object.values(passwordValidity).every(Boolean);
         if (!allRulesPassed) {
-            setSnackbar({
-                open: true,
-                message: "A senha não atende todas as regras.",
-                severity: "error",
-            });
+            showSnackbar("A senha não atende todas as regras.", "error");
             return;
         }
 
@@ -139,11 +110,7 @@ const RegisterPage: React.FC = () => {
                 }
             });
             
-            setSnackbar({
-                open: true,
-                message: "Cadastro realizado com sucesso!",
-                severity: "success",
-            });
+            showSnackbar("Cadastro realizado com sucesso!", "success");
 
             setTimeout(() => {
                 navigate('/login');
@@ -151,11 +118,7 @@ const RegisterPage: React.FC = () => {
             
         } catch (error: any) {
             const errorMessage = error?.response?.data?.message || "Erro ao realizar cadastro. Verifique os dados e tente novamente.";
-            setSnackbar({
-                open: true,
-                message: errorMessage,
-                severity: "error",
-            });
+            showSnackbar(errorMessage, "error");
         }
     };
 
@@ -353,17 +316,6 @@ const RegisterPage: React.FC = () => {
                     </Box>
                 </Grid2>
             </Grid2>
-            
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </Container>
     );
 

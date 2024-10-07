@@ -3,12 +3,13 @@ using CondoPlanner.Application.Services.ReservationServices;
 using CondoPlanner.Application.Services.ReservationServices.DTOs;
 using CondoPlanner.Application.Services.CommonDTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ReservationController : ControllerBase
     {
         private readonly IReservationService _reservationService;
