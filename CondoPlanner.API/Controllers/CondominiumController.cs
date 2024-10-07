@@ -3,6 +3,7 @@ using CondoPlanner.Application.Services.AccountServices.DTOs;
 using CondoPlanner.Application.Services.CommonDTOs;
 using CondoPlanner.Application.Services.CondominiumServices;
 using CondoPlanner.Application.Services.CondominiumServices.DTOs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CondominiumController : ControllerBase
     {
         private readonly ICondominiumService _condominiumService;
