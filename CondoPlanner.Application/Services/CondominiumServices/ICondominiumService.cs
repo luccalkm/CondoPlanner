@@ -7,6 +7,6 @@ namespace CondoPlanner.Application.Services.CondominiumServices
         Task<CondominiumDto> GetCondominiumDetailsAsync(int condominiumId);
         Task DeleteCondominiumAsync(int id);
         Task<CondominiumDto> CreateCondominiumAsync(CondominiumCreateDto input);
-        Task<IEnumerable<CondominiumDto>> GetAllCondominumsFromUserAsync(string userId);
+        Task<IEnumerable<CondominiumDto>> GetCondominiumFromUserId(string userId);
     }
 }

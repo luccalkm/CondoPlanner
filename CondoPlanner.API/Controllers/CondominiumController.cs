@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using CondoPlanner.Application.Services.AccountServices.DTOs;
 using CondoPlanner.Application.Services.CommonDTOs;
 using CondoPlanner.Application.Services.CondominiumServices;
 using CondoPlanner.Application.Services.CondominiumServices.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CondoPlanner.API.Controllers
@@ -23,17 +25,18 @@ namespace CondoPlanner.API.Controllers
         }
 
         // TODO: Mudar para UserService
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetAllCondominumsFromUser(string userId)
+        [HttpGet("admin/{userId}")]
+        public async Task<ResponseDto<IEnumerable<CondominiumDto>>> GetCondominiumByAdministratorId(string userId)
         {
-            var condominiums = await _condominiumService.GetAllCondominumsFromUserAsync(userId);
+            var condominiums = await _condominiumService.GetCondominiumFromUserId(userId);
             var response = new ResponseDto<IEnumerable<CondominiumDto>>
             {
+                StatusCode = HttpStatusCode.OK,
                 Success = true,
                 Data = condominiums
             };
 
-            return Ok(response);
+            return response;
         }
 
         [HttpGet("{id}")]
@@ -59,27 +62,29 @@ namespace CondoPlanner.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateCondominium(CondominiumCreateDto input)
+        public async Task<ResponseDto<CondominiumDto>> CreateCondominium(CondominiumCreateDto input)
         {
             try
             {
                 var condominiumDto = await _condominiumService.CreateCondominiumAsync(input);
-                var response = new ResponseDto<CondominiumDto>
+
+                return new ResponseDto<CondominiumDto>
                 {
+                    StatusCode = HttpStatusCode.Created,
                     Success = true,
-                    Message = "Condominium created successfully.",
+                    Message = "Condomínio registrar com sucesso.",
                     Data = condominiumDto
                 };
-
-                return CreatedAtAction(nameof(GetCondominiumById), new { id = condominiumDto.Id }, response);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(new ResponseDto<CondominiumDto>
+                return new ResponseDto<CondominiumDto>
                 {
+                    StatusCode = HttpStatusCode.InternalServerError,
                     Success = false,
-                    Message = ex.Message
-                });
+                    Message = "Ocorreu um erro ao registrar o condomínio.",
+                    Data = null
+                };
             }
         }
 

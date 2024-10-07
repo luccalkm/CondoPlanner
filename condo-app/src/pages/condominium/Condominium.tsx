@@ -1,24 +1,77 @@
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import Header from "../../components/header/Header";
-import { useState } from "react";
-import SubmitButton from "../../components/Buttons/SubmitButton";
+import { Typography, Paper, Box, Grid, TextField } from "@mui/material";
+import { useState, useEffect } from "react";
 import { CondominiumApi } from "../../apiClient";
 import { ApiConfiguration } from "../../apiClient/apiConfig";
+import SubmitButton from "../../components/Buttons/SubmitButton";
+import Header from "../../components/header/Header";
 import { useAuth } from "../../context/AuthContext";
 import { useSnackbar } from "../../context/SnackBarContext";
 
-export const Condominium = () => {
-    const { loginResponse } = useAuth();
+const DEFAULT_VALUE = {
+    name: '',
+    address: '',
+    numberOfResidences: 0,
+    cep: '',
+    city: '',
+    state: '',
+};
+
+
+export const Condominium: React.FC = () => {
+    const api = new CondominiumApi(ApiConfiguration);
+    const { getLoggedId } = useAuth();
     const { showSnackbar } = useSnackbar();
     
-    const [formData, setFormData] = useState({
-        name: '',
-        address: '',
-        numberOfResidences: '',
-        cep: '',
-        city: '',
-        state: '',
-    });
+    const [formData, setFormData] = useState(DEFAULT_VALUE);
+    const [isCondominiumRegistered, setIsCondominiumRegistered] = useState<boolean>(false);
+    const [isEditMode, setIsEditMode] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [condominiumId, setCondominiumId] = useState<number | undefined>(undefined);
+
+    useEffect(() => {
+        handleCondominiumRegistered();
+    }, []);
+
+    // Função para verificar se o condomínio já está registrado
+    const handleCondominiumRegistered = async () => {
+        const userId = getLoggedId();
+
+        if (!userId) {
+            showSnackbar("Ocorreu um erro. Reautentique e tente novamente.", "error");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const res = await api.apiCondominiumAdminUserIdGet({ userId });
+            console.log(res);
+
+            if (!res.data) return;
+
+            if (res!.data!.length > 0) {
+                setIsCondominiumRegistered(true);
+                setIsEditMode(true);
+                const condominium = res.data[0]!;
+                setCondominiumId(condominium.id!); // Supondo que 'id' seja o identificador
+                setFormData({
+                    name: condominium.name || '',
+                    address: condominium.address || '',
+                    numberOfResidences: condominium.residents!.length,
+                    cep: "",
+                    city: "",
+                    state: ""
+                });
+            } else {
+                setIsCondominiumRegistered(false);
+                setIsEditMode(false);
+                setFormData(DEFAULT_VALUE);
+            }
+        } catch (error: any) {
+            showSnackbar("Erro ao verificar o condomínio cadastrado. Tente novamente.", "error");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -39,35 +92,55 @@ export const Condominium = () => {
 
         const submissionData = {
             ...formData,
-            numberOfResidences: parseInt(formData.numberOfResidences, 10),
+            numberOfResidences: formData.numberOfResidences
         };
 
         try {
-            const api = new CondominiumApi(ApiConfiguration);
-            const res = await api.apiCondominiumPost({
-                condominiumCreateDto: {
-                    ...submissionData,
-                    idAdministrator: loginResponse?.userId
-                }
-            });
-            
-            setFormData({
-                name: '',
-                address: '',
-                numberOfResidences: '',
-                cep: '',
-                city: '',
-                state: '',
-            });
-        }
-        finally {
+            // if (isEditMode && condominiumId) {
+            //     // Supondo que exista um endpoint para atualizar, como apiCondominiumPut
+            //     const res = await api.apiCondominiumPut({
+            //         id: condominiumId,
+            //         condominiumUpdateDto: {
+            //             ...submissionData,
+            //             idAdministrator: getLoggedId()
+            //         }
+            //     });
 
+            //     showSnackbar("Condomínio atualizado com sucesso!", "success");
+            // } else {
+                const res = await api.apiCondominiumPost({
+                    condominiumCreateDto: {
+                        ...submissionData,
+                        idAdministrator: getLoggedId()
+                    }
+                });
+
+                showSnackbar("Condomínio registrado com sucesso!", "success");
+                setFormData(DEFAULT_VALUE);
+                setIsCondominiumRegistered(true);
+                setIsEditMode(true);
+                setCondominiumId(res!.data!.id);
+            // }
+        } catch (ex: any) {
+            const errorMessage = ex?.response?.data?.message || "Erro ao realizar operação.";
+            showSnackbar(errorMessage, "error");
         }
     };
 
+    if (loading) {
+        return (
+            <>
+                <Header title="Condomínio" />
+                <Typography variant="h6" align="center" mt={5}>
+                    Carregando...
+                </Typography>
+            </>
+        );
+    }
+
     return (
         <>
-            <Header title="Condomínio" />
+            <Header title={isEditMode ? "Editar Condomínio" : "Cadastrar Condomínio"} />
             <Paper
                 sx={{
                     marginTop: 5,
@@ -78,7 +151,7 @@ export const Condominium = () => {
                 }}
             >
                 <Typography variant="h4" mb={5}>
-                    Cadastrar Condomínio
+                    {isEditMode ? "Editar Condomínio" : "Cadastrar Condomínio"}
                 </Typography>
 
                 <Box width='100%' marginBottom={4}>
@@ -118,7 +191,7 @@ export const Condominium = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
-                                label="Endereço"
+                                label="Avenida/Rua/Logradouro"
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
@@ -165,7 +238,7 @@ export const Condominium = () => {
                 <Box width='100%' display={'flex'} justifyContent={'flex-end'}>
                     <SubmitButton 
                         onClick={handleSubmit}
-                        label={"Registrar"}
+                        label={isEditMode ? "Atualizar" : "Registrar"}
                     />
                 </Box>
             </Paper>

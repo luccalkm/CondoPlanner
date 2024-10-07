@@ -6,12 +6,14 @@ interface AuthContextType {
     login: (loginRes: LoginResponseDto) => void;
     logout: () => void;
     isLoggedIn: () => boolean;
+    getLoggedId: () => string | null;
 }
 const AuthContext = createContext<AuthContextType>({
     loginResponse: undefined,
     isLoggedIn: () => { return false },
     login: () => { },
     logout: () => { },
+    getLoggedId: () => { return null}
 });
 export const useAuth = (): AuthContextType => {
     return useContext(AuthContext);
@@ -22,42 +24,67 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    
     const [token, setToken] = useState<string | null>(() => {
         return localStorage.getItem('token');
     });
 
-    const [loginResponse, setLoginResponse] = useState<LoginResponseDto>();
+    
+    const [userId, setUserId] = useState<string | null>(() => {
+        return localStorage.getItem('sessionId');
+    });
+
+    const [loginResponse, setLoginResponse] = useState<LoginResponseDto | undefined>(() => {
+        if (token && userId) {
+            return {
+                token,
+                userId,
+                username: '', 
+                email: ''     
+            };
+        }
+        return undefined;
+    });
 
     useEffect(() => {
-        if (token) {
+        if (token && userId) {
             localStorage.setItem('token', token);
+            localStorage.setItem('sessionId', userId);
         } else {
             localStorage.removeItem('token');
+            localStorage.removeItem('sessionId');
         }
-    }, [token]);
+    }, [token, userId]);
 
+    
     const isLoggedIn = (): boolean => {
-        const token = localStorage.getItem('token');
         return token != null;
     }
 
     const login = (loginRes: LoginResponseDto) => {
-        if (loginRes && loginRes.token) {
+        if (loginRes && loginRes.token && loginRes.userId) {
             setToken(loginRes.token);
-            setLoginResponse({
-                ...loginRes
-            })
+            setUserId(loginRes.userId);
+            setLoginResponse(loginRes);
         }
     };
 
+    
     const logout = () => {
-        setLoginResponse(undefined)
-        localStorage.removeItem('token');
+        setLoginResponse(undefined);
+        setToken(null);
+        setUserId(null);
+    }
+
+    
+    const getLoggedId = (): string | null => {
+        return userId;
     }
 
     return (
         <AuthContext.Provider
             value={{
+                getLoggedId,
                 isLoggedIn,
                 loginResponse,
                 login,
@@ -68,3 +95,4 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         </AuthContext.Provider>
     );
 }
+
