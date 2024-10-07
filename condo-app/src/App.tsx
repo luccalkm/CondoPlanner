@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/layouts/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import NotFoundPage from "./pages/StatusCodePages/NotFound";
 import { SnackbarProvider } from "./context/SnackBarContext";
+import CommomAreaPage from "./pages/commomArea/CommomArea";
 
 function App() {
     return (
@@ -21,7 +22,8 @@ function App() {
                             <Route index element={<HomePage />} />
                             <Route path="condominium" element={<Condominium />} />
                             <Route path="reservation" element={<ReservationPage />} />
-                        </Route>
+                            <Route path="commom-area" element={<CommomAreaPage />} />
+                    </Route>
                     </Route>
 
                     <Route element={<LoginLayout />}>

@@ -15,7 +15,7 @@ import {
     ListItemIcon,
     Tooltip,
 } from '@mui/material';
-import SubmitButton from '../../../components/Buttons/SubmitButton';
+import SubmitButton from '../../../components/buttons/SubmitButton';
 import { AccountApi, RegisterUserDto } from "../../../apiClient";
 import { ApiConfiguration } from "../../../apiClient/apiConfig";
 import { CheckCircle, Cancel } from "@mui/icons-material";

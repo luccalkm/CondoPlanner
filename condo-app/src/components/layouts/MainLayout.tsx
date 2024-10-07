@@ -51,7 +51,7 @@ const MainLayout = () => {
         { text: 'Início', path: '/', icon: <HomeRounded /> },
         { text: 'Reservas', path: '/reservation', icon: <CalendarMonthRounded /> },
         { text: 'Moradores', path: '/contact', icon: <GroupRounded /> },
-        { text: 'Espaços', path: '/spaces', icon: <DashboardCustomizeRounded /> },
+        { text: 'Espaços', path: '/commom-area', icon: <DashboardCustomizeRounded /> },
         { text: 'Condomínio', path: '/condominium', icon: <ApartmentRounded /> },
     ];
 
