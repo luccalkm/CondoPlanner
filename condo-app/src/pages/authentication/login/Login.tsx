@@ -14,7 +14,7 @@ import { AccountApi } from '../../../apiClient';
 import { ApiConfiguration } from '../../../apiClient/apiConfig';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from '../../../context/SnackBarContext';
+import { useSnackbar } from '../../../context/SnackbarContext';
 
 const LoginPage: React.FC = () => {
     const [loginForm, setLoginForm] = useState<LoginDto>({

@@ -9,7 +9,7 @@ import ReservationPage from "./pages/reservation/Reservation";
 import { ProtectedRoute } from "./components/layouts/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import NotFoundPage from "./pages/StatusCodePages/NotFound";
-import { SnackbarProvider } from "./context/SnackBarContext";
+import { SnackbarProvider } from "./context/SnackbarContext";
 import CommomAreaPage from "./pages/commomArea/CommomArea";
 
 function App() {

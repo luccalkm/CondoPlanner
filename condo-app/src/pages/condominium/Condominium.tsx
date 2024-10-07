@@ -2,10 +2,10 @@ import { Typography, Paper, Box, Grid, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import { CondominiumApi, CondominiumDto } from "../../apiClient";
 import { ApiConfiguration } from "../../apiClient/apiConfig";
-import SubmitButton from "../../components/Buttons/SubmitButton";
 import Header from "../../components/header/Header";
 import { useAuth } from "../../context/AuthContext";
-import { useSnackbar } from "../../context/SnackBarContext";
+import { useSnackbar } from "../../context/SnackbarContext";
+import SubmitButton from "../../components/buttons/SubmitButton";
 
 const DEFAULT_VALUE = {
     name: '',
