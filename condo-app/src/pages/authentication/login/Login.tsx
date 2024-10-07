@@ -10,7 +10,7 @@ import {
     Alert,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import SubmitButton from "../../../components/Buttons/SubmitButton";
+import SubmitButton from "../../../components/buttons/SubmitButton";
 import { LoginDto } from '../../../apiClient/models/LoginDto';
 import { AccountApi } from '../../../apiClient';
 import { ApiConfiguration } from '../../../apiClient/apiConfig';

@@ -8,6 +8,7 @@ import { Condominium } from "./pages/condominium/Condominium";
 import ReservationPage from "./pages/reservation/Reservation";
 import { ProtectedRoute } from "./components/layouts/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import CommomAreaPage from "./pages/commomArea/CommomArea";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                         <Route index element={<HomePage />} />
                         <Route path="condominium" element={<Condominium />} />
                         <Route path="reservation" element={<ReservationPage />} />
+                        <Route path="commom-area" element={<CommomAreaPage />} />
                     </Route>
                 </Route>
                 <Route element={<LoginLayout />}>

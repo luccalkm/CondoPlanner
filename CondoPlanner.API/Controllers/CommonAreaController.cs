@@ -12,7 +12,7 @@ namespace CondoPlanner.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class CommonAreaController : ControllerBase
     {
         private readonly AppDbContext _context;
